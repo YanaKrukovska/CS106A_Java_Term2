@@ -1,10 +1,9 @@
 package ua.edu.ukma.ykrukovska.Unit1.homework;
-
 import ua.edu.ukma.ykrukovska.Unit1.DataInput;
-
 import java.io.IOException;
 
 public class GroupTester {
+
     private static final int MAX_SIZE = 5;
 
     public static void main(String[] args) throws IOException {
@@ -18,7 +17,6 @@ public class GroupTester {
         do {
             String name = DataInput.getString();
             students[inputCounter++] = new Student(name);
-
         } while (inputCounter < MAX_SIZE);
 
         group.setStudents(students);
