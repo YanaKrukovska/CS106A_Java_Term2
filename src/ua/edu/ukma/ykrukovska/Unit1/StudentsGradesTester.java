@@ -2,7 +2,7 @@ package ua.edu.ukma.ykrukovska.Unit1;
 
 public class StudentsGradesTester {
 
-    private static final int MAX_SIZE = 10;
+    private static final int MAX_SIZE = 5;
 
     public static void main(String[] args) {
 
@@ -36,6 +36,18 @@ public class StudentsGradesTester {
         System.out.println("Students with satisfying grade (60-70): " + gradesService.getStudentsSatisfying());
         System.out.println("Students with bad grade (0-59): " + gradesService.getStudentsBad());
         System.out.println("All grades: " + gradesService.toString());
-    }
 
+        System.out.println("Do you want to sort numbers in ascending or descending order? 1-ascending, 2-descending");
+        int sortingOrder = DataInput.getInt();
+        if (sortingOrder != 1 && sortingOrder != 2) {
+            do {
+                System.out.println("You can only choose 1 or 2. Try again");
+                sortingOrder = DataInput.getInt();
+            } while (sortingOrder != 1 && sortingOrder != 2);
+
+
+        }
+        System.out.println("Marks sorted: " + gradesService.sortGrades(sortingOrder));
+
+    }
 }

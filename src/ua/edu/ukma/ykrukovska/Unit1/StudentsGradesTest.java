@@ -1,7 +1,6 @@
 package ua.edu.ukma.ykrukovska.Unit1;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 public class StudentsGradesTest {
@@ -85,6 +84,24 @@ public class StudentsGradesTest {
         int[] currentGrades = {0, 20, 30, 60, 59, 66, 68};
         gradeService.setGrades(currentGrades);
         assertEquals(4, gradeService.getStudentsBad());
+
+    }
+
+    @Test
+    public void sortGradesAscending() {
+        StudentsGrades gradeService = new StudentsGrades();
+        int[] currentGrades = {5, 56, 1, 69, 29, 96, 100};
+        gradeService.setGrades(currentGrades);
+        assertEquals("1, 5, 29, 56, 69, 96, 100, ", gradeService.sortGrades(1));
+
+    }
+
+    @Test
+    public void sortGradesDescending() {
+        StudentsGrades gradeService = new StudentsGrades();
+        int[] currentGrades = {5, 56, 1, 69, 29, 96, 100};
+        gradeService.setGrades(currentGrades);
+        assertEquals("100, 96, 69, 56, 29, 5, 1, ", gradeService.sortGrades(2));
 
     }
 }
