@@ -6,11 +6,13 @@ import ua.edu.ukma.ykrukovska.unit5.practice.FuelCarData;
 public class FordFocus3 extends PetrolCar {
 
     public FordFocus3(EcoboostEngine engine) {
-        super(engine,new FuelCarData(2017));
+        super(engine,new FuelCarData(2017, "AA2257II"));
 
     }
 
-    public FuelCarData getCarData(){
-        return fuelCarData;
+
+    @Override
+    public void showCarInformation() {
+        System.out.println(carData.getData());
     }
 }

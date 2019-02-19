@@ -6,9 +6,9 @@ public class FuelCarData extends CarData {
 
     private int fuelConsumption;
 
-    public String showDistanceCovered() {
+    public FuelCarData(int year, String vin) {
 
-        return "Distance: " + distanceCovered + ". Time: " + timeOfDriving + ". Fuel: " + fuelConsumption;
+        super(year, vin);
     }
 
     public int getFuelConsumption() {
@@ -19,7 +19,9 @@ public class FuelCarData extends CarData {
         this.fuelConsumption += fuelConsumption;
     }
 
-    public FuelCarData(int year) {
-        super(year);
+
+    @Override
+    public String getData(){
+        return super.getData() + " . Fuel consumption: " + fuelConsumption;
     }
 }

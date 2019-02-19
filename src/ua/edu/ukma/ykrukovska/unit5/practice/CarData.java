@@ -1,14 +1,20 @@
 package ua.edu.ukma.ykrukovska.unit5.practice;
 
-public class CarData {
+public abstract class CarData {
 
     protected int year;
-    protected int vin;
+    protected String vin;
     protected int distanceCovered;
     protected int timeOfDriving;
 
-    public CarData(int year) {
+    public CarData(int year, String vin) {
         this.year = year;
+        this.vin = vin;
+    }
+
+    public String getData(){
+        return "year: "+ getYear() + " . Vin: " + getVin() + " . Distance covered: " +
+                getDistanceCovered() + " . Time of driving: " + getTimeOfDriving();
     }
 
     public int getTimeOfDriving() {
@@ -27,16 +33,17 @@ public class CarData {
         this.year = year;
     }
 
-    public int getVin() {
+    public String getVin() {
         return vin;
-    }
-
-    public void setVin(int vin) {
-        this.vin = vin;
     }
 
     public int getDistanceCovered() {
         return distanceCovered;
+    }
+
+    public String showDistanceCovered() {
+
+        return "Distance: " + distanceCovered + ". Time: " + timeOfDriving ;
     }
 
     public void setDistanceCovered(int distanceCovered) {

@@ -6,17 +6,15 @@ import ua.edu.ukma.ykrukovska.unit5.practice.FuelCarData;
 public abstract class FuelCar extends Car {
 
 
-    protected FuelCarData fuelCarData;
-
     public FuelCar(EcoboostEngine engine, FuelCarData carData) {
         super(engine);
-        this.fuelCarData = carData;
+        this.carData = carData;
     }
 
-    public void doTrip(int distance, int fuelConsumptions, int time){
-        fuelCarData.addFuelConsumption(fuelConsumptions);
-        fuelCarData.setDistanceCovered(fuelCarData.getDistanceCovered() + distance);
-        fuelCarData.setTimeOfDriving(fuelCarData.getTimeOfDriving() + time);
+    public void doTrip(int distance, int fuelConsumptions, int time) {
+        ((FuelCarData) carData).addFuelConsumption(fuelConsumptions);
+        carData.setDistanceCovered(carData.getDistanceCovered() + distance);
+        carData.setTimeOfDriving(carData.getTimeOfDriving() + time);
     }
 
 }

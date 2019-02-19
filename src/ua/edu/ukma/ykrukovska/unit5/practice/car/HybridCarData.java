@@ -6,8 +6,8 @@ public class HybridCarData extends CarData {
 
     protected int batteryVolume;
 
-    public HybridCarData(int year, int batteryVolume) {
-        super(year);
+    public HybridCarData(int year, int batteryVolume, String vin) {
+        super(year, vin);
         this.batteryVolume = batteryVolume;
     }
 }
