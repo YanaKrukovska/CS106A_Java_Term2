@@ -57,6 +57,8 @@ public class Faculty {
     }
 
 
+
+
     public Faculty(String name) {
         this.name = name;
     }
@@ -71,5 +73,10 @@ public class Faculty {
 
     public int getAcademicDepartmentCounter() {
         return academicDepartmentCounter;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

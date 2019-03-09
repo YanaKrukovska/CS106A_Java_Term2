@@ -36,8 +36,9 @@ public class AcademicDepartment {
                 students[i] = null;
                 for (int j = i + 1; j < studentsCounter; j++) {
                     students[j - 1] = students[j];
+
                 }
-                studentsCounter--;
+                students[--studentsCounter] = null;
                 break;
             }
         }
@@ -80,7 +81,7 @@ public class AcademicDepartment {
                 for (int j = i +1; j < teachersCounter; j++) {
                     teachers[j - 1] = teachers[j];
                 }
-                teachersCounter--;
+                teachers[--teachersCounter] = null;
                 break;
             }
         }
@@ -134,5 +135,10 @@ public class AcademicDepartment {
 
     public Student[] getStudents() {
         return students;
+    }
+
+    @Override
+    public String toString() {
+        return  name;
     }
 }
