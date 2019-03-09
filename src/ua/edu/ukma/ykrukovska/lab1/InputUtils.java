@@ -54,4 +54,11 @@ public class InputUtils {
         System.out.println(result);
     }
 
+    public static void printDepartmentStudents(AcademicDepartment department) {
+        String result = department.getName() + ": ";
+        for (int i = 0; i < SortUtils.getItemsAmount(department.getStudents()); i++) {
+            result += department.getStudents()[i] + ", ";
+        }
+        System.out.println(result);
+    }
 }
