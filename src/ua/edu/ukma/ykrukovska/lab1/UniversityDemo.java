@@ -8,7 +8,7 @@ public class UniversityDemo {
     private static University university = new University();
 
     public static void main(String[] args) {
-        int userAction = 0;
+        int userAction;
 
         do {
             showMenu();
@@ -61,10 +61,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doSearchingOfStudentsByDepartmentAndCourse() {
@@ -77,14 +76,13 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doDepartmentPersonSortingByName() {
-        int userAction = 0;
+        int userAction;
         do {
             System.out.println("1. Вивести всіх студентів кафедри впорядкованих за алфавітом.");
             System.out.println("2. Вивести всіх викладачів кафедри впорядкованих за алфавітом.");
@@ -98,12 +96,12 @@ public class UniversityDemo {
                 case 2:
                     orderDepartmentTeachersByName();
                     break;
-                case 0:
             }
         } while (userAction != 0);
     }
 
     private static void orderDepartmentTeachersByName() {
+
         do {
             String departmentName = getCorrectUserString("кафедра");
             Teacher[] teachers = (Teacher[]) university.getTeachersOfDepartmentOrderByName(departmentName);
@@ -112,10 +110,8 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(teachers);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        } while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void orderDepartmentStudentsByName() {
@@ -127,10 +123,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doSortingDepartmentStudentsByCourse() {
@@ -142,14 +137,13 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doSortingByName() {
-        int userAction = 0;
+        int userAction;
         do {
             System.out.println("1. Вивести всіх студентів факультета впорядкованих за алфавітом.");
             System.out.println("2. Вивести всіх викладачів факультета впорядкованих за алфавітом.");
@@ -176,10 +170,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(teachers);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void orderFacultyStudentsByName() {
@@ -191,10 +184,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doSortingStudentsByCourse() {
@@ -207,14 +199,13 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doSearchingAction() {
-        int userAction = 0;
+        int userAction;
         do {
             System.out.println("1. Знайти студента за ПІБ");
             System.out.println("2. Знайти студента за курсом");
@@ -250,10 +241,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(teachers);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
 
     }
 
@@ -267,10 +257,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void findStudentByCourse() {
@@ -283,10 +272,9 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void findStudentByName() {
@@ -299,15 +287,14 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+        }
+
+        while (InputUtils.showYesNoMenu() != 0);
 
     }
 
     private static void doPersonAction() {
-        int userAction = 0;
+        int userAction;
         do {
             System.out.println("1. Створити студента");
             System.out.println("2. Редагувати  студента");
@@ -369,11 +356,9 @@ public class UniversityDemo {
                     InputUtils.printDepartmentTeachers(department);
                 }
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void deleteStudent() {
@@ -403,11 +388,9 @@ public class UniversityDemo {
                     InputUtils.printDepartmentStudents(department);
                 }
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void editTeacher() {
@@ -441,11 +424,9 @@ public class UniversityDemo {
                     InputUtils.printDepartmentTeachers(department);
                 }
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
 
@@ -479,11 +460,9 @@ public class UniversityDemo {
                     InputUtils.printDepartmentTeachers(department);
                 }
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void addStudent() {
@@ -516,12 +495,9 @@ public class UniversityDemo {
                     }
                     InputUtils.printDepartmentStudents(department);
                 }
-
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void editStudent() {
@@ -555,15 +531,13 @@ public class UniversityDemo {
                     InputUtils.printDepartmentStudents(department);
                 }
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void doDepartmentAction() {
-        int userAction = 0;
+        int userAction ;
         do {
             System.out.println("1. Створити кафедру");
             System.out.println("2. Редагувати  кафедру");
@@ -587,7 +561,7 @@ public class UniversityDemo {
     }
 
     private static void doFacultyAction() {
-        int userAction = 0;
+        int userAction;
         do {
             System.out.println("1. Створити факультет");
             System.out.println("2. Редагувати факультет");
@@ -622,11 +596,10 @@ public class UniversityDemo {
                 System.out.println("Факультет " + facultyName + " видалено");
                 InputUtils.printFaculties(university.getFaculties());
             }
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
+
 
     private static void editFaculty() {
 
@@ -646,11 +619,10 @@ public class UniversityDemo {
                 }
             }
             InputUtils.printFaculties(university.getFaculties());
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
+
 
     private static void addFaculty() {
 
@@ -665,11 +637,8 @@ public class UniversityDemo {
                 System.out.println("Факультет створено");
                 InputUtils.printFaculties(university.getFaculties());
             }
-
-            if (InputUtils.showYesNoMenu() == 0) {
-                break;
-            }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void addDepartment() {
@@ -695,11 +664,9 @@ public class UniversityDemo {
                     InputUtils.printDepartments(faculty);
                 }
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void editDepartment() {
@@ -727,11 +694,9 @@ public class UniversityDemo {
                 }
                 InputUtils.printDepartments(faculty);
 
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void deleteDepartment() {
@@ -752,11 +717,9 @@ public class UniversityDemo {
                     System.out.println("Кафедру " + departmentName + " видалено");
                     InputUtils.printDepartments(faculty);
                 }
-                if (InputUtils.showYesNoMenu() == 0) {
-                    break;
-                }
             }
-        } while (true);
+        }
+        while (InputUtils.showYesNoMenu() != 0);
     }
 
     private static void showMenu() {

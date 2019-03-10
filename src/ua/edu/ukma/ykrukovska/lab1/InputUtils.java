@@ -4,9 +4,8 @@ import java.io.IOException;
 
 public class InputUtils {
     public static int getUserInput(int min, int max, String prompt) {
-        int userInput;
         System.out.println("Введіть " + prompt);
-        userInput = DataInput.getInt();
+        int userInput = DataInput.getInt();
 
         if (userInput < min || userInput > max) {
             System.out.println("Хибне значення " + prompt);
@@ -38,7 +37,7 @@ public class InputUtils {
         return userInput;
     }
 
-    public static void printFaculties(Faculty[] faculties){
+    public static void printFaculties(Faculty[] faculties) {
         String result = "";
         for (int i = 0; i < SortUtils.getItemsAmount(faculties); i++) {
             result += faculties[i] + ", ";
@@ -46,7 +45,7 @@ public class InputUtils {
         System.out.println(result);
     }
 
-    public static void printDepartments(Faculty faculty){
+    public static void printDepartments(Faculty faculty) {
         String result = faculty.getName() + ": ";
         for (int i = 0; i < SortUtils.getItemsAmount(faculty.getAcademicDepartments()); i++) {
             result += faculty.getAcademicDepartments()[i] + ", ";

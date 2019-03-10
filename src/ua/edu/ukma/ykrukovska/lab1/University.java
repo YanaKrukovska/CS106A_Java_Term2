@@ -157,8 +157,6 @@ public class University {
     }
 
     public Student[] getAllStudentOrderByCourse() {
-
-
         return SortUtils.sortStudentsByCourse(getAllStudents());
     }
 
@@ -178,15 +176,11 @@ public class University {
                     for (int k = 0; k < department.getStudentsCounter(); k++) {
 
                         result[resultCounter++] = department.getStudents()[k];
-
                     }
                 }
-
             }
         }
         return SortUtils.sortByName(result);
-
-
     }
 
     public Person[] getTeachersOfFacultyByName(String facultyName) {
@@ -205,21 +199,15 @@ public class University {
                     for (int k = 0; k < department.getTeachersCounter(); k++) {
 
                         result[resultCounter++] = department.getTeachers()[k];
-
                     }
                 }
-
             }
         }
         return SortUtils.sortByName(result);
-
     }
 
     public Student[] getStudentsOfDepartmentOrderByCourse(String departmentName) {
-
-
         return SortUtils.sortStudentsByCourse(getStudentsOfDepartment(departmentName));
-
     }
 
     public Student[] getStudentsOfDepartment(String departmentName) {
@@ -234,13 +222,10 @@ public class University {
 
                 if (department.getName().equals(departmentName)) {
                     for (int k = 0; k < department.getStudentsCounter(); k++) {
-
                         result[resultCounter++] = department.getStudents()[k];
-
                     }
                 }
             }
-
         }
         return result;
     }
@@ -252,26 +237,19 @@ public class University {
         for (int i = 0; i < facultyCounter; i++) {
             Faculty faculty = faculties[i];
             for (int j = 0; j < faculty.getAcademicDepartmentCounter(); j++) {
-
                 AcademicDepartment department = faculty.getAcademicDepartments()[j];
-
                 if (department.getName().equals(departmentName)) {
                     for (int k = 0; k < department.getTeachersCounter(); k++) {
-
                         result[resultCounter++] = department.getTeachers()[k];
-
                     }
                 }
             }
-
         }
         return result;
     }
 
     public Person[] getStudentsOfDepartmentOrderByName(String departmentName) {
-
         return SortUtils.sortByName(getStudentsOfDepartment(departmentName));
-
     }
 
 
@@ -294,7 +272,6 @@ public class University {
                     for (int k = 0; k < department.getStudentsCounter(); k++) {
                         if (department.getStudents()[k].getCourse() == course) {
                             result[resultCounter++] = department.getStudents()[k];
-
                         }
                     }
                 }
@@ -304,7 +281,6 @@ public class University {
     }
 
     public Student[] getStudentsOfDepartmentAndCourseOrderByName(String departmentName, int course) {
-
         return (Student[]) SortUtils.sortByName(getStudentsOfDepartmentAndCourse(departmentName, course));
     }
 
