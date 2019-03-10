@@ -46,7 +46,7 @@ public class University {
 
     public Student[] findStudentByName(String name) {
 
-        Student[] result = new Student[100];
+        Student[] result = new Student[MAX_AMOUNT_OF_STUDENTS];
         int resultCounter = 0;
 
         for (int i = 0; i < facultyCounter; i++) {
@@ -67,7 +67,7 @@ public class University {
     }
 
     public Student[] findStudentByCourse(int course) {
-        Student[] result = new Student[100];
+        Student[] result = new Student[MAX_AMOUNT_OF_STUDENTS];
         int resultCounter = 0;
 
         for (int i = 0; i < facultyCounter; i++) {
@@ -90,7 +90,7 @@ public class University {
 
     public Student[] findStudentByGroup(String group) {
 
-        Student[] result = new Student[100];
+        Student[] result = new Student[MAX_AMOUNT_OF_STUDENTS];
         int resultCounter = 0;
 
         for (int i = 0; i < facultyCounter; i++) {

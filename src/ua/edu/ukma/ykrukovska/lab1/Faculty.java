@@ -29,7 +29,7 @@ public class Faculty {
                 for (int j = i+1; j < academicDepartmentCounter; j++) {
                     academicDepartments[j - 1] = academicDepartments[j];
                 }
-                academicDepartmentCounter--;
+                academicDepartments[--academicDepartmentCounter] = null;
                 break;
             }
         }
@@ -46,18 +46,9 @@ public class Faculty {
 
     }
 
-
-
     public AcademicDepartment[] getAcademicDepartments() {
         return academicDepartments;
     }
-
-    public void setAcademicDepartments(AcademicDepartment[] academicDepartments) {
-        this.academicDepartments = academicDepartments;
-    }
-
-
-
 
     public Faculty(String name) {
         this.name = name;

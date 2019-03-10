@@ -101,10 +101,6 @@ public class AcademicDepartment {
         return teachers;
     }
 
-    public void setTeachers(Teacher[] teachers) {
-        this.teachers = teachers;
-    }
-
     public AcademicDepartment(String name) {
         this.name = name;
     }

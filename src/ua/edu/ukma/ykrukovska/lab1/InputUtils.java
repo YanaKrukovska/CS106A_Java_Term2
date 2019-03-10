@@ -61,4 +61,28 @@ public class InputUtils {
         }
         System.out.println(result);
     }
+
+    public static void printDepartmentTeachers(AcademicDepartment department) {
+        String result = department.getName() + ": ";
+        for (int i = 0; i < SortUtils.getItemsAmount(department.getTeachers()); i++) {
+            result += department.getTeachers()[i] + ", ";
+        }
+        System.out.println(result);
+    }
+
+    public static void printPersons(Person[] persons) {
+
+        String result = "";
+        for (int i = 0; i < SortUtils.getItemsAmount(persons); i++) {
+            result += persons[i] + ", ";
+        }
+        System.out.println(result);
+    }
+
+    static int showYesNoMenu() {
+
+        return getUserInput(0, 1, " режим ( 0 - завершити, 1 - продовжити)");
+
+
+    }
 }
