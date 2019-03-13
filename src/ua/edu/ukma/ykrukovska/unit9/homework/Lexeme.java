@@ -20,16 +20,8 @@ public class Lexeme {
         return lexeme;
     }
 
-    public void setLexeme(String lexeme) {
-        this.lexeme = lexeme;
-    }
-
     public int getCounter() {
         return counter;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
     }
 
 
