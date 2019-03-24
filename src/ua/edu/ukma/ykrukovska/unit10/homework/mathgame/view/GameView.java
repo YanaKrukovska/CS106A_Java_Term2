@@ -2,10 +2,10 @@ package ua.edu.ukma.ykrukovska.unit10.homework.mathgame.view;
 
 import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.controller.GameController;
 import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.Game;
-import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.Task;
 
 import javax.swing.*;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class GameView extends JFrame {
 
     private Game gameModel;
-    private final JTable table;
+    private JTable table;
     private final GameController gameController;
     private JLabel maxNumberLabel = new JLabel("max number");
     private JLabel taskAmountLabel = new JLabel("amount of tasks");
@@ -22,6 +22,7 @@ public class GameView extends JFrame {
     private JTextField taskAmountField = new JTextField();
 
     private JButton startButton = new JButton("start");
+    private JButton submitButton = new JButton("submit");
 
     public GameView(GameController gameController, Game gameModel) throws HeadlessException {
 
@@ -33,24 +34,10 @@ public class GameView extends JFrame {
         setVisible(true);
         setBounds(200, 200, 600, 500);
 
-        String[] columnNames = {"Task",
-                "Answer"
-        };
 
-        Object[][] data = {
-                {"2+2", new Integer(4)},
-                {"1+4", new Integer(5)}
-
-        };
-
-        table = new JTable(data, columnNames);
-        /*TableModel tableModel ;
-        table = new JTable(tableModel);*/
-        JScrollPane panel = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
         JPanel summaryPanel = createTopPanel();
         add(summaryPanel);
-        add(panel);
+
     }
 
     public JPanel createTopPanel() {
@@ -59,13 +46,50 @@ public class GameView extends JFrame {
 
         summaryPanel.add(new JLabel("rita"));
 
+        maxNumberField.setText("10");
+        taskAmountField.setText("5");
+
         maxNumberLabel.setBounds(30, 15, 100, 50);
         maxNumberField.setBounds(120, 20, 30, 30);
 
         taskAmountLabel.setBounds(170, 15, 100, 50);
         taskAmountField.setBounds(270, 20, 30, 30);
         startButton.setBounds(360, 20, 100, 30);
+        submitButton.setBounds(460, 20, 100, 30);
 
+        startButtonListener();
+        submitButtonListener();
+
+
+        summaryPanel.add(maxNumberLabel);
+        summaryPanel.add(maxNumberField);
+        summaryPanel.add(taskAmountLabel);
+        summaryPanel.add(taskAmountField);
+        summaryPanel.add(startButton);
+        summaryPanel.add(submitButton);
+
+        return summaryPanel;
+    }
+
+    private void submitButtonListener() {
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == submitButton) {
+
+                    AbstractTableModel tableModel = (AbstractTableModel) table.getModel();
+                    tableModel.fireTableDataChanged();
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        System.out.println(tableModel.getValueAt(i, 1));
+                    }
+
+                }
+            }
+        });
+
+    }
+
+    public void startButtonListener() {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -97,19 +121,45 @@ public class GameView extends JFrame {
                     }
 
                     if (readyToPlay) {
-                        Task[] tasks = gameModel.generateTasks(maxNumber, taskAmount);
+
+                        createTable();
+
+                        // Task[] tasks = gameModel.generateTasks(maxNumber, taskAmount);
+
                     }
+
+
                 }
             }
         });
+    }
 
-        summaryPanel.add(maxNumberLabel);
-        summaryPanel.add(maxNumberField);
-        summaryPanel.add(taskAmountLabel);
-        summaryPanel.add(taskAmountField);
-        summaryPanel.add(startButton);
+    public void createTable() {
 
-        return summaryPanel;
+
+        String[] columnNames = {"Expression",
+                "Answer", "Status"};
+
+        Object[][] data = {
+                {"Kathy", null, null},
+                {"John", "Doe",
+                        "Rowing", new Integer(3), new Boolean(true)},
+                {"Sue", "Black",
+                        "Knitting", new Integer(2), new Boolean(false)},
+                {"Jane", "White",
+                        "Speed reading", new Integer(20), new Boolean(true)},
+                {"Joe", "Brown",
+                        "Pool", new Integer(10), new Boolean(false)}
+        };
+        if (table == null) {
+            table = new JTable(data, columnNames);
+            JScrollPane panel = new JScrollPane(table);
+            table.setFillsViewportHeight(true);
+
+            add(panel);
+        }
+
+
     }
 
 

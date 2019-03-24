@@ -1,5 +1,8 @@
 package ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model;
 
+import java.util.concurrent.ThreadLocalRandom;
+
+
 public class Game {
 
     private int correctAnswers;
@@ -9,14 +12,39 @@ public class Game {
     Task[] tasks;
 
 
+
+
     public Task[] generateTasks(int maxNumber, int taskAmount) {
         this.maxNumber = maxNumber;
         this.taskAmount = taskAmount;
         tasks = new Task[taskAmount];
 
+
+        int randomNum;
+
         for (int i = 0; i < taskAmount; i++) {
-            tasks[i] = new Task(5,1,2,3,11,'+','+','+');
+            int result, a, b, c;
+            char action1, action2;
+            do {
+                a = ThreadLocalRandom.current().nextInt(0, maxNumber + 1);
+                action1 = (ThreadLocalRandom.current().nextInt(1, 3) == 1) ? '+' : '-';
+                b = ThreadLocalRandom.current().nextInt(0, maxNumber + 1);
+                action2 = (ThreadLocalRandom.current().nextInt(1, 3) == 1) ? '+' : '-';
+                c = ThreadLocalRandom.current().nextInt(0, maxNumber + 1);
+
+                result = calculateAnswer(a, action1, b, action2, c);
+            } while (result > maxNumber);
+            tasks[i] = new Task(a, b, c, result, action1, action2);
         }
+
         return tasks;
+    }
+
+    private int calculateAnswer(int a, char action1, int b, char action2, int c) {
+
+        int result = (action1 == '+') ? a + b : a - b;
+        result = (action2 == '+') ? result + c : result - b;
+
+        return result;
     }
 }
