@@ -1,13 +1,11 @@
 package ua.edu.ukma.ykrukovska.unit10.homework.mathgame.controller;
 
-import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.Game;
-import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.Task;
+import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.GameModel;
 import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.view.GameView;
-import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.view.MathGameView;
 
 public class GameController {
 
-    private Game gameModel;
+    private GameModel gameModel = new GameModel();
     private GameView view;
 
     public GameController() {

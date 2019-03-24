@@ -1,7 +1,8 @@
 package ua.edu.ukma.ykrukovska.unit10.homework.mathgame.view;
 
 import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.controller.GameController;
-import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.Game;
+import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.GameModel;
+import ua.edu.ukma.ykrukovska.unit10.homework.mathgame.model.Task;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -12,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class GameView extends JFrame {
 
-    private Game gameModel;
+    private GameModel gameModel;
     private JTable table;
     private final GameController gameController;
     private JLabel maxNumberLabel = new JLabel("max number");
@@ -24,11 +25,12 @@ public class GameView extends JFrame {
     private JButton startButton = new JButton("start");
     private JButton submitButton = new JButton("submit");
 
-    public GameView(GameController gameController, Game gameModel) throws HeadlessException {
+    public GameView(GameController gameController, GameModel gameModel) throws HeadlessException {
 
         this.gameController = gameController;
         this.gameModel = gameModel;
 
+        setTitle("Math coach");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(2, 1));
         setVisible(true);
@@ -45,9 +47,6 @@ public class GameView extends JFrame {
         summaryPanel.setLayout(null);
 
         summaryPanel.add(new JLabel("rita"));
-
-        maxNumberField.setText("10");
-        taskAmountField.setText("5");
 
         maxNumberLabel.setBounds(30, 15, 100, 50);
         maxNumberField.setBounds(120, 20, 30, 30);
@@ -78,9 +77,23 @@ public class GameView extends JFrame {
                 if (e.getSource() == submitButton) {
 
                     AbstractTableModel tableModel = (AbstractTableModel) table.getModel();
-                    tableModel.fireTableDataChanged();
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
-                        System.out.println(tableModel.getValueAt(i, 1));
+                        Integer userAnswer;
+
+                        try {
+                            userAnswer = Integer.valueOf((String) tableModel.getValueAt(i, 1));
+                        } catch (Exception ex) {
+                            userAnswer = null;
+                        }
+
+
+                        if (userAnswer != null && userAnswer.equals(gameModel.getTasks()[i].getResult())) {
+
+                            tableModel.setValueAt("correct", i, 2);
+                        } else {
+                            tableModel.setValueAt("wrong", i, 2);
+                        }
+
                     }
 
                 }
@@ -97,13 +110,8 @@ public class GameView extends JFrame {
                     boolean readyToPlay = true;
                     int maxNumber = gameController.checkIfInputIsNumber(maxNumberField.getText());
 
-                    if (maxNumber != -1) {
-                        if (maxNumber < 10) {
-                            JOptionPane.showMessageDialog(getParent(), "Number's too small");
-                            readyToPlay = false;
-                        }
+                    if (maxNumber == -1) {
 
-                    } else {
                         JOptionPane.showMessageDialog(getParent(), "It's not a number");
                         readyToPlay = false;
                     }
@@ -122,9 +130,9 @@ public class GameView extends JFrame {
 
                     if (readyToPlay) {
 
+                        gameModel.setMaxNumber(maxNumber);
+                        gameModel.setTaskAmount(taskAmount);
                         createTable();
-
-                        // Task[] tasks = gameModel.generateTasks(maxNumber, taskAmount);
 
                     }
 
@@ -140,23 +148,29 @@ public class GameView extends JFrame {
         String[] columnNames = {"Expression",
                 "Answer", "Status"};
 
-        Object[][] data = {
-                {"Kathy", null, null},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)}
-        };
-        if (table == null) {
-            table = new JTable(data, columnNames);
-            JScrollPane panel = new JScrollPane(table);
-            table.setFillsViewportHeight(true);
 
+        Task[] tasks = gameModel.generateTasks();
+
+
+        if (table == null) {
+
+            table = new JTable();
+            JScrollPane panel = new JScrollPane(table);
+            table.setVisible(true);
+            table.setFillsViewportHeight(true);
             add(panel);
+            validate();
+        }
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(gameModel.getTaskAmount());
+        model.setColumnCount(3);
+        model.setColumnIdentifiers(columnNames);
+
+        for (int i = 0; i < tasks.length; i++) {
+            model.setValueAt(tasks[i].toString(), i, 0);
+            model.setValueAt(null, i, 1);
+            model.setValueAt(null, i, 2);
         }
 
 
