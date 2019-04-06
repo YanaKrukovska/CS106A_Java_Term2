@@ -1,48 +1,74 @@
 package ua.edu.ukma.ykrukovska.unit12.homework;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StreamTokenizer;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WordCounter {
 
-    private static Map<String, Integer> dictionary = new HashMap<>();
-    private final static String FILE1 = "C:\\IdeaProjects\\Files\\Text1.txt";
-    private static List<String> files = new ArrayList<>();
+    private final static String FOLDER = "C:\\IdeaProjects\\Files\\";
+    private final static String FILE1 = "Text1.txt";
+    private final static String FILE2 = "Text2.txt";
+    private static List<String> files = new ArrayList<String>();
+    private Dictionary dictionary = new Dictionary();
 
-    public static void main(String[] args) {
 
-files.add(FILE1);
+    public static void main(String[] args) throws IOException {
+        WordCounter wordCounter = new WordCounter();
+        wordCounter.calculateWords();
+    }
+
+    public void calculateWords() throws IOException {
+        initFiles();
+
         StreamTokenizer text;
+        for (String fileName : files) {
 
-        try {
-            text = new StreamTokenizer(new BufferedReader(new FileReader(FILE1)));
+            text = new StreamTokenizer(new BufferedReader(new FileReader(FOLDER + fileName)));
             int type;
 
             while ((type = text.nextToken()) != StreamTokenizer.TT_EOF) {
                 if (type == StreamTokenizer.TT_WORD) {
-                    countWords(text.sval);
+                    dictionary.addWord(fileName, text.sval.toLowerCase());
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
         }
 
+        printStatistic();
+        saveToDisc();
 
     }
 
-    private static void countWords(String word) {
-        Integer count = dictionary.get(word);
-        if (count == null)  {
-            dictionary.put(word, 1);
-        } else {
-            dictionary.put(word, count + 1);
+    private void saveToDisc() throws IOException {
+        PrintWriter writer = new PrintWriter(FOLDER + "Dictionary.txt", "UTF-8");
+
+        for (WordStat wordStat : dictionary.getVocabulary().values()) {
+
+            writer.print(wordStat.getWord() + " " + wordStat.getAllOccurrencesCount() + System.lineSeparator());
         }
+        writer.close();
+    }
+
+    private void printStatistic() throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter(FOLDER + "DictionaryFull.txt", "UTF-8");
+
+        writer.print(dictionary.toString());
+    }
+
+
+    private void initFiles() {
+        files.add("Text1.txt");
+        files.add("Text2.txt");
+        files.add("Text3.txt");
+        files.add("Text4.txt");
+        files.add("Text5.txt");
+        files.add("Text6.txt");
+        files.add("Text7.txt");
+        files.add("Text8.txt");
+        files.add("Text9.txt");
+        files.add("Text10.txt");
+
 
     }
 

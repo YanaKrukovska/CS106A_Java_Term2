@@ -2,8 +2,9 @@ package ua.edu.ukma.ykrukovska.unit12.homework;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class WordStat {
+public class WordStat implements Comparable {
 
     private String word;
     private Map<String, Long> statistics = new HashMap<>();
@@ -26,9 +27,22 @@ public class WordStat {
     public Long getAllOccurrencesCount() {
         long count = 0;
         for (long fileCount : statistics.values()) {
-           count += fileCount;
+            count += fileCount;
         }
         return count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WordStat wordStat = (WordStat) o;
+        return Objects.equals(word, wordStat.word);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(word);
     }
 
     @Override
@@ -36,9 +50,19 @@ public class WordStat {
         String fileDetails = "";
 
         for (Map.Entry<String, Long> entry : statistics.entrySet()) {
-           fileDetails += entry.getKey() + ": " + entry.getValue() + System.lineSeparator();
+            fileDetails += entry.getKey() + ": " + entry.getValue() + System.lineSeparator();
         }
 
-        return word + System.lineSeparator() + fileDetails;
+        return word + "[" + getAllOccurrencesCount() + "]" +  System.lineSeparator() + fileDetails;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        WordStat otherWord = (WordStat) o;
+        return word.compareTo(otherWord.word);
+    }
+
+    public String getWord() {
+        return word;
     }
 }
