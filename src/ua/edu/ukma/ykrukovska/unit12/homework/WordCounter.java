@@ -7,15 +7,17 @@ import java.util.List;
 public class WordCounter {
 
     private final static String FOLDER = "C:\\IdeaProjects\\Files\\";
-    private final static String FILE1 = "Text1.txt";
-    private final static String FILE2 = "Text2.txt";
     private static List<String> files = new ArrayList<String>();
     private Dictionary dictionary = new Dictionary();
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         WordCounter wordCounter = new WordCounter();
-        wordCounter.calculateWords();
+        try {
+            wordCounter.calculateWords();
+        } catch (IOException e) {
+            System.out.println("Failed to open file  for reading. Please check parameters");
+        }
     }
 
     public void calculateWords() throws IOException {
@@ -40,18 +42,34 @@ public class WordCounter {
 
     }
 
-    private void saveToDisc() throws IOException {
-        PrintWriter writer = new PrintWriter(FOLDER + "Dictionary.txt", "UTF-8");
+    private void saveToDisc() {
+        try (PrintWriter writer = new PrintWriter(FOLDER + "Dictionary.txt")) {
+            for (WordStat wordStat : dictionary.getVocabulary().values()) {
+                writer.print(wordStat.getWord() + " " + wordStat.getAllOccurrencesCount() + System.lineSeparator());
+            }
 
-        for (WordStat wordStat : dictionary.getVocabulary().values()) {
-
-            writer.print(wordStat.getWord() + " " + wordStat.getAllOccurrencesCount() + System.lineSeparator());
+        } catch (FileNotFoundException e) {
+            System.out.println("File's not found, results will be printed in console");
+            for (WordStat wordStat : dictionary.getVocabulary().values()) {
+                System.out.print(wordStat.getWord() + " " + wordStat.getAllOccurrencesCount() + System.lineSeparator());
+            }
         }
-        writer.close();
+
+
     }
 
-    private void printStatistic() throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(FOLDER + "DictionaryFull.txt", "UTF-8");
+    private void printStatistic() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(FOLDER + "DictionaryFull.txt");
+        } catch (FileNotFoundException e) {
+            File resultFile = new File(FOLDER + "DictionaryFull.txt");
+            try {
+                writer = new PrintWriter(resultFile);
+            } catch (FileNotFoundException e1) {
+                //Never happens
+            }
+        }
 
         writer.print(dictionary.toString());
     }
@@ -59,7 +77,7 @@ public class WordCounter {
 
     private void initFiles() {
         files.add("Text1.txt");
-        files.add("Text2.txt");
+      /*  files.add("Text2.txt");
         files.add("Text3.txt");
         files.add("Text4.txt");
         files.add("Text5.txt");
@@ -67,7 +85,7 @@ public class WordCounter {
         files.add("Text7.txt");
         files.add("Text8.txt");
         files.add("Text9.txt");
-        files.add("Text10.txt");
+        files.add("Text10.rtf");*/
 
 
     }
