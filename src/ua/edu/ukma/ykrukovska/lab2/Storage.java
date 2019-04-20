@@ -122,7 +122,7 @@ public class Storage implements WareService {
     @Override
     public void addWareAmount(String wareName, double amount) {
        Ware usedWare = getByName(wareName);
-        if (usedWare != null){
+        if (usedWare != null && amount > 0){
             usedWare.setAmount(usedWare.getAmount() + amount);
         }
     }
@@ -130,7 +130,7 @@ public class Storage implements WareService {
     @Override
     public void deleteWareAmount(String wareName, double amount) {
         Ware usedWare = getByName(wareName);
-        if (usedWare != null && usedWare.getAmount() >= amount){
+        if (usedWare != null &&  amount  <= usedWare.getAmount() && amount > 0){
             usedWare.setAmount(usedWare.getAmount() - amount);
         }
 
