@@ -23,9 +23,14 @@ public interface WareService {
 
     void deleteGroup(String groupName);
 
+    void addWareAmount(String wareName, double amount);
+
+    void deleteWareAmount(String wareName, double amount);
+
     List<Ware> listGroupWares(String groupName);
 
     String showInformation(List<Ware> wares);
+
     String showGroupWaresInformation(List<Ware> wares);
 
     String showOverallPrice(List<Ware> wares);

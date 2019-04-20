@@ -120,6 +120,23 @@ public class Storage implements WareService {
     }
 
     @Override
+    public void addWareAmount(String wareName, double amount) {
+       Ware usedWare = getByName(wareName);
+        if (usedWare != null){
+            usedWare.setAmount(usedWare.getAmount() + amount);
+        }
+    }
+
+    @Override
+    public void deleteWareAmount(String wareName, double amount) {
+        Ware usedWare = getByName(wareName);
+        if (usedWare != null && usedWare.getAmount() >= amount){
+            usedWare.setAmount(usedWare.getAmount() - amount);
+        }
+
+    }
+
+    @Override
     public List<Ware> listGroupWares(String groupName) {
         List<Ware> groupItems = new LinkedList<>();
         if (groups.contains(groupName)) {

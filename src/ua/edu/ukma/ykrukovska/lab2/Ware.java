@@ -6,7 +6,7 @@ public class Ware {
     private String description;
     private String producer;
     private double price;
-    private double amount = 10;
+    private double amount = 0;
     private String group;
 
 
