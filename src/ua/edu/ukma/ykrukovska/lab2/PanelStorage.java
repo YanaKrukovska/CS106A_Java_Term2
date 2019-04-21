@@ -20,6 +20,9 @@ public class PanelStorage extends JFrame {
 
     private JButton jAddQuantityOfWare = new JButton("Add quantity of ware");
     private JButton jTakeAwayQuantityOdWare = new JButton("Take away quantity of ware");
+    private JButton jOverallStatistic = new JButton("Show overall storage statistic");
+    private JButton jGroupStatistic = new JButton("Show overall group statistic");
+    private JButton jOverallPrice = new JButton("Show overall price");
 
     private JButton submit1 = new JButton("Submit");
     private JButton submit2 = new JButton("Submit");
@@ -29,6 +32,7 @@ public class PanelStorage extends JFrame {
     private JButton submit6 = new JButton("Submit");
     private JButton submit7 = new JButton("Submit");
     private JButton submit8 = new JButton("Submit");
+    private JButton submit9 = new JButton("Submit");
 
     private JLabel lAddGroup = new JLabel("Name group");
     private JTextField lAddGroupField = new JTextField();
@@ -69,12 +73,21 @@ public class PanelStorage extends JFrame {
     private JLabel wareNameToDelete = new JLabel("Ware name to delete");
     private JTextField wareNameToDeleteField = new JTextField();
 
+    private static JTable table;
+    private int tableRow = 0;
+
     static GraphicsConfiguration gc;
     JFrame frame = new JFrame(gc);
+    private JTextArea textAreaGroupStatistic;
+    private JTextField groupStatisticNameField;
+    private JLabel addWareQuantName = new JLabel("Name of ware");
+    private JTextField addWareQuantField = new JTextField();
+    private JLabel takeAwayQuantName = new JLabel("Name of ware");;
+    private JTextField takeAwayQuantNameField= new JTextField();
 
     public static void createTable() {
-        JFrame frame = new JFrame("Table");
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        JFrame frameTable = new JFrame("Table");
+        frameTable.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         String[] columnNames = {
                 "Group of storage",
@@ -85,16 +98,16 @@ public class PanelStorage extends JFrame {
                 "Price of one ware"
         };
 
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-        JTable table = new JTable(model);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 15);
+        table = new JTable(model);
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        frame.getContentPane().add(scrollPane);
-        frame.setPreferredSize(new Dimension(800, 400));
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        frameTable.getContentPane().add(scrollPane);
+        frameTable.setPreferredSize(new Dimension(800, 400));
+        frameTable.pack();
+        frameTable.setLocationRelativeTo(null);
+        frameTable.setVisible(true);
 
 
     }
@@ -133,6 +146,12 @@ public class PanelStorage extends JFrame {
         panel.add(jAddQuantityOfWare);
         jTakeAwayQuantityOdWare.setBounds(150, 350, 200, 50);
         panel.add(jTakeAwayQuantityOdWare);
+        jOverallStatistic.setBounds(150, 400, 200, 50);
+        panel.add(jOverallStatistic);
+        jGroupStatistic.setBounds(150, 450, 200, 50);
+        panel.add(jGroupStatistic);
+        jOverallPrice.setBounds(150, 500, 200, 50);
+        panel.add(jOverallPrice);
 
 
         addGroupListener();
@@ -143,8 +162,96 @@ public class PanelStorage extends JFrame {
         deleteWareListener();
         jAddQuantityOfWareListener();
         jTakeAwayQuantityOdWareListener();
+        jOverallStatisticListener();
+        jGroupStatisticListener();
+        addOverallPriceListener();
 
         return panel;
+    }
+
+    private void  addOverallPriceListener() {
+        jOverallPrice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == jOverallPrice) {
+                    JFrame frame = new JFrame();
+                    JTextArea textArea = new JTextArea();
+                    frame.add(textArea);
+                    textArea.append(storageModel.showOverallPrice(storageModel.getWares()));
+                    System.out.println(storageModel.showOverallPrice(storageModel.getWares()));
+                    textArea.setVisible(true);
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    frame.setSize(400, 500);
+                    frame.setLocation(800, 100);
+                    frame.setVisible(true);
+
+                }
+            }
+        });
+
+    }
+
+    private void jGroupStatisticListener() {
+        jGroupStatistic.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == jGroupStatistic) {
+                    JFrame frame = new JFrame("Group statistic");
+                    textAreaGroupStatistic = new JTextArea();
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    frame.setSize(400, 500);
+                    frame.setLocation(800, 100);
+                    frame.setLayout(new GridLayout(4,1));
+                    JLabel label = new JLabel("Group name");
+                     groupStatisticNameField = new JTextField();
+                    frame.add(label);
+                    frame.add(groupStatisticNameField);
+                    frame.add(textAreaGroupStatistic);
+                    frame.add(submit9);
+
+
+                    addSubmitGroupStatisticListener();
+                    textAreaGroupStatistic.setVisible(true);
+                    frame.setVisible(true);
+
+                }
+            }
+        });
+
+    }
+
+    private void addSubmitGroupStatisticListener() {
+        submit9.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == submit9) {
+
+                    textAreaGroupStatistic.append(storageModel.showGroupWaresInformation(storageModel.listGroupWares(groupStatisticNameField.getText())));
+                }
+            }
+        });
+
+    }
+
+    private void jOverallStatisticListener() {
+        jOverallStatistic.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == jOverallStatistic) {
+                    JFrame frame = new JFrame();
+                    JTextArea textArea = new JTextArea();
+                    frame.add(textArea);
+                    textArea.append(storageModel.showInformation(storageModel.getWares()));
+                    textArea.setVisible(true);
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    frame.setSize(400, 500);
+                    frame.setLocation(800, 100);
+                    frame.setVisible(true);
+
+                }
+            }
+        });
+
     }
 
 
@@ -318,8 +425,19 @@ public class PanelStorage extends JFrame {
                         readyToPlay = false;
                     }
                     if (readyToPlay) {
+
                         storageModel.addWare(new Ware(wareNameField.getText(), wareDescriptionField.getText(),
-                                warePriceField.getText(), 0, wareGroupField.getText()));
+                                warePoducerField.getText(), 0, wareGroupField.getText()));
+
+
+                        table.setValueAt(wareGroupField.getText(), tableRow, 0);
+                        table.setValueAt(wareNameField.getText(), tableRow, 1);
+                        table.setValueAt(wareDescriptionField.getText(), tableRow, 2);
+                        table.setValueAt(warePoducerField.getText(), tableRow, 3);
+                        table.setValueAt(warePriceField.getText(), tableRow, 5);
+                        tableRow++;
+                        table.validate();
+
                     }
 
                 }
@@ -378,7 +496,20 @@ public class PanelStorage extends JFrame {
                     }
                     if (readyToPlay) {
                         storageModel.editWare(new Ware(wareNameFieldEdited.getText(), wareDescriptionFieldEdited.getText(),
-                                warePriceFieldEdited.getText(), 0, wareGroupFieldEdited.getText()));
+                                warePoducerFieldEdited.getText(), 0, wareGroupFieldEdited.getText()));
+
+
+                        for (int i = 0; i < tableRow; i++) {
+                            if (table.getValueAt(i, 0).equals(wareNameFieldEdited.getText())) {
+                                table.setValueAt(wareNameFieldEdited.getText(), i, 1);
+                                table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
+                                table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
+                                table.setValueAt(warePriceFieldEdited.getText(), i, 5);
+                                table.validate();
+                            }
+                        }
+
+
                     }
 
 
@@ -422,6 +553,17 @@ public class PanelStorage extends JFrame {
                 if (e.getSource() == submit6) {
                     storageModel.deleteWareByName(wareNameToDeleteField.getText());
 
+                    for (int i = 0; i < tableRow; i++) {
+                        if (table.getValueAt(i, 1).equals(wareNameToDeleteField.getText())) {
+                            table.setValueAt(null, i, 0);
+                            table.setValueAt(wareNameFieldEdited.getText(), i, 1);
+                            table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
+                            table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
+                            table.setValueAt(warePriceFieldEdited.getText(), i, 5);
+                            table.validate();
+                        }
+                    }
+
                 }
             }
         });
@@ -442,8 +584,8 @@ public class PanelStorage extends JFrame {
                     frame.setVisible(false);
                     form7.setVisible(true);
 
-                    form7.add(lAddWare);
-                    form7.add(lAddWareField);
+                    form7.add(addWareQuantName);
+                    form7.add(addWareQuantField);
                     form7.add(lAddQuantityOfWare);
                     form7.add(lAddQuantityOfWareField);
 
@@ -471,7 +613,15 @@ public class PanelStorage extends JFrame {
                         readyToPlay = false;
                     }
                     if (readyToPlay) {
-                        storageModel.addWareAmount(lAddWareField.getText(), Double.parseDouble(lAddQuantityOfWareField.getText()));
+                        storageModel.addWareAmount(addWareQuantField.getText(), Double.parseDouble(lAddQuantityOfWareField.getText()));
+                        System.out.println(storageModel.getByName(addWareQuantField.getText()).getAmount());
+
+                        for (int i = 0; i < tableRow; i++) {
+                            if (table.getValueAt(i, 1).equals(addWareQuantField.getText())) {
+                                table.setValueAt(storageModel.getByName(addWareQuantField.getText()).getAmount(), i, 4);
+                                table.validate();
+                            }
+                        }
                     }
 
                 }
@@ -494,8 +644,8 @@ public class PanelStorage extends JFrame {
                     frame.setVisible(false);
                     form8.setVisible(true);
 
-                    form8.add(lAddWare);
-                    form8.add(lAddWareField);
+                    form8.add(takeAwayQuantName);
+                    form8.add(takeAwayQuantNameField);
                     form8.add(lDeleteQuantityOfWare);
                     form8.add(lDeleteQuantityOfWareField);
 
@@ -522,8 +672,15 @@ public class PanelStorage extends JFrame {
                         readyToPlay = false;
                     }
                     if (readyToPlay) {
-                        storageModel.deleteWareAmount(lAddWareField.getText(), Double.parseDouble(lDeleteQuantityOfWareField.getText()));
-                        System.out.println(storageModel.getByName(lAddWareField.getText().toString()));
+                        storageModel.deleteWareAmount(takeAwayQuantNameField.getText(), Double.parseDouble(lDeleteQuantityOfWareField.getText()));
+                        System.out.println(storageModel.getByName(takeAwayQuantNameField.getText()).getAmount());
+
+                        for (int i = 0; i < tableRow; i++) {
+                            if (table.getValueAt(i, 1).equals(takeAwayQuantNameField.getText())) {
+                                table.setValueAt(storageModel.getByName(takeAwayQuantNameField.getText()).getAmount(), i, 4);
+                                table.validate();
+                            }
+                        }
                     }
                 }
             }
