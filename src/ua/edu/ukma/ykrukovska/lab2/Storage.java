@@ -75,7 +75,7 @@ public class Storage implements WareService {
     }
 
     @Override
-    public String addGroup(String groupName) {
+    public String addGroup(String groupName ) {
         groups.add(groupName);
         return groupName;
     }

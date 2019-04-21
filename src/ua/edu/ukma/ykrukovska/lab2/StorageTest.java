@@ -178,4 +178,20 @@ public class StorageTest {
 
     }
 
+
+    @Test
+    public void addWareAmount() {
+
+        Storage storage = new Storage();
+        storage.addWare(new Ware("Purina Two", "cat food", "Purina", 200, "Pet food"));
+        storage.addWare(new Ware("Purina One", "premium cat food", "Purina GMBH", 300, "Pet food"));
+
+        storage.addWareAmount("Purina Three", 50);
+        storage.addWareAmount("Purina One", 50);
+        storage.deleteWareAmount("Purina One", 51);
+        System.out.println(storage.getByName("Purina One").getAmount());
+
+
+    }
+
 }
