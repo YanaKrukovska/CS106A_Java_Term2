@@ -445,12 +445,13 @@ public class PanelStorage extends JFrame {
                         JOptionPane.showMessageDialog(getParent(), "It's not a number");
                         readyToPlay = false;
                     }
+
                     if (readyToPlay) {
 
                         boolean canPutInTable = true;
                         if (!wareGroupField.getText().equals("")) {
                             storageModel.addWare(new Ware(wareNameField.getText(), wareDescriptionField.getText(),
-                                    warePoducerField.getText(), 0, wareGroupField.getText()));
+                                    warePoducerField.getText(), Double.parseDouble(warePriceField.getText()), wareGroupField.getText()));
 
                             for (int i = 0; i < tableRow; i++) {
                                 if (wareNameField.getText().equals(storageModel.getByName(wareNameField.getText()).getName())) {
@@ -463,6 +464,7 @@ public class PanelStorage extends JFrame {
                                 table.setValueAt(wareNameField.getText(), tableRow, 1);
                                 table.setValueAt(wareDescriptionField.getText(), tableRow, 2);
                                 table.setValueAt(warePoducerField.getText(), tableRow, 3);
+                                table.setValueAt(Double.parseDouble(warePriceField.getText()), tableRow, 4);
                                 table.setValueAt(warePriceField.getText(), tableRow, 5);
                                 tableRow++;
 
@@ -529,14 +531,16 @@ public class PanelStorage extends JFrame {
                     }
                     if (readyToPlay) {
                         storageModel.editWare(new Ware(wareNameFieldEdited.getText(), wareDescriptionFieldEdited.getText(),
-                                warePoducerFieldEdited.getText(), 0, wareGroupFieldEdited.getText()));
+                                warePoducerFieldEdited.getText(), Double.parseDouble(warePriceFieldEdited.getText()), wareGroupFieldEdited.getText()));
 
 
                         for (int i = 0; i < tableRow; i++) {
                             if (table.getValueAt(i, 0).equals(wareNameFieldEdited.getText())) {
+                                table.setValueAt(wareGroupFieldEdited.getText(), i, 0);
                                 table.setValueAt(wareNameFieldEdited.getText(), i, 1);
                                 table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
                                 table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
+                                table.setValueAt(Double.parseDouble(warePriceFieldEdited.getText()), i, 4);
                                 table.setValueAt(warePriceFieldEdited.getText(), i, 5);
                                 table.validate();
                             }
@@ -592,6 +596,7 @@ public class PanelStorage extends JFrame {
                             table.setValueAt(wareNameFieldEdited.getText(), i, 1);
                             table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
                             table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
+                            table.setValueAt(Double.parseDouble(warePriceFieldEdited.getText()), i, 4);
                             table.setValueAt(warePriceFieldEdited.getText(), i, 5);
                             table.validate();
                         }
