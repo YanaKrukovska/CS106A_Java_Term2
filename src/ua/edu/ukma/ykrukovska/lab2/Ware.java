@@ -69,6 +69,6 @@ public class Ware {
     @Override
     public String toString() {
         return "Name: " + getName() + ", " + description + ", produced by " +
-                producer + ", price: " + price + ", group: " + group;
+                producer + ", price: " + price + ", group: " + group + ", amount: " + amount;
     }
 }

@@ -23,6 +23,8 @@ public class PanelStorage extends JFrame {
     private JButton jOverallStatistic = new JButton("Show overall storage statistic");
     private JButton jGroupStatistic = new JButton("Show overall group statistic");
     private JButton jOverallPrice = new JButton("Show overall price");
+    private JButton jGroupPrice = new JButton("Group price");
+    private JButton searchWare = new JButton("Search ware");
 
     private JButton submit1 = new JButton("Submit");
     private JButton submit2 = new JButton("Submit");
@@ -33,6 +35,8 @@ public class PanelStorage extends JFrame {
     private JButton submit7 = new JButton("Submit");
     private JButton submit8 = new JButton("Submit");
     private JButton submit9 = new JButton("Submit");
+    private JButton submit10 = new JButton("Submit");
+    private JButton search = new JButton("Search");
 
     private JLabel lAddGroup = new JLabel("Name group");
     private JTextField lAddGroupField = new JTextField();
@@ -50,12 +54,12 @@ public class PanelStorage extends JFrame {
 
     private JLabel wareName = new JLabel("Ware name");
     private JLabel wareDescription = new JLabel("Description");
-    private JLabel warePoducer = new JLabel("Producer");
+    private JLabel wareProducer = new JLabel("Producer");
     private JLabel warePrice = new JLabel("Price");
     private JLabel wareGroup = new JLabel("Group");
     private JTextField wareNameField = new JTextField();
     private JTextField wareDescriptionField = new JTextField();
-    private JTextField warePoducerField = new JTextField();
+    private JTextField wareProducerField = new JTextField();
     private JTextField warePriceField = new JTextField();
     private JTextField wareGroupField = new JTextField();
 
@@ -72,19 +76,23 @@ public class PanelStorage extends JFrame {
 
     private JLabel wareNameToDelete = new JLabel("Ware name to delete");
     private JTextField wareNameToDeleteField = new JTextField();
+    private JTextArea textAreaGroupStatistic;
+    private JTextField groupStatisticNameField;
+    private JLabel addWareQuantName = new JLabel("Name of ware");
+    private JTextField addWareQuantField = new JTextField();
+    private JLabel takeAwayQuantName = new JLabel("Name of ware");
+    private JTextField takeAwayQuantNameField = new JTextField();
+    private JLabel searchWareName = new JLabel("Name of ware you want to find");
+    private JTextField searchWareNameField = new JTextField();
 
     private static JTable table;
     private int tableRow = 0;
 
     static GraphicsConfiguration gc;
     JFrame frame = new JFrame(gc);
-    private JTextArea textAreaGroupStatistic;
-    private JTextField groupStatisticNameField;
-    private JLabel addWareQuantName = new JLabel("Name of ware");
-    private JTextField addWareQuantField = new JTextField();
-    private JLabel takeAwayQuantName = new JLabel("Name of ware");
-    ;
-    private JTextField takeAwayQuantNameField = new JTextField();
+    private JTextArea foundWareArea;
+    private JTextArea textAreaGroupPrice;
+    private JTextField groupPriceNameField;
 
     public static void createTable() {
         JFrame frameTable = new JFrame("Table");
@@ -153,7 +161,11 @@ public class PanelStorage extends JFrame {
         panel.add(jGroupStatistic);
         jOverallPrice.setBounds(150, 500, 200, 50);
         panel.add(jOverallPrice);
+        jGroupPrice.setBounds(150, 550, 200, 50);
+        panel.add(jGroupPrice);
 
+        searchWare.setBounds(150, 600, 200, 50);
+        panel.add(searchWare);
 
         addGroupListener();
         editGroupListener();
@@ -166,16 +178,108 @@ public class PanelStorage extends JFrame {
         jOverallStatisticListener();
         jGroupStatisticListener();
         addOverallPriceListener();
+        addGroupPriceListener();
+        addSearchListener();
 
         return panel;
     }
+
+
+    private void addGroupPriceListener() {
+        jGroupPrice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == jGroupPrice) {
+                    JFrame frame = new JFrame("Price of wares of the group ");
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    frame.setSize(400, 500);
+                    frame.setLocation(800, 100);
+                    frame.setLayout(new GridLayout(4, 1));
+                    JLabel label = new JLabel("Group name");
+                    textAreaGroupPrice = new JTextArea();
+                    groupPriceNameField = new JTextField();
+                    frame.add(label);
+                    frame.add(groupPriceNameField);
+                    frame.add(textAreaGroupPrice);
+                    frame.add(submit10);
+
+
+                    addSubmitGroupPriceListener();
+                    textAreaGroupPrice.setVisible(true);
+                    frame.setVisible(true);
+
+                }
+            }
+        });
+
+    }
+
+    private void addSubmitGroupPriceListener() {
+        submit10.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == submit10) {
+                    if (groupPriceNameField.getText() != null || groupPriceNameField.getText().length() == 0
+                            || groupPriceNameField.getText().trim().length() == 0) {
+                        textAreaGroupPrice.append(storageModel.showOverallPrice(storageModel.listGroupWares(groupPriceNameField.getText())));
+                    }
+                }
+            }
+        });
+
+    }
+
+
+    private void addSearchListener() {
+        searchWare.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == searchWare) {
+                    JFrame frame = new JFrame("Search for ware");
+                    foundWareArea = new JTextArea();
+                    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    frame.setSize(400, 500);
+                    frame.setLocation(800, 100);
+                    frame.setLayout(new GridLayout(4, 1));
+                    JLabel label = new JLabel("Name of the ware you want to find");
+                    frame.add(label);
+                    frame.add(searchWareNameField);
+                    frame.add(foundWareArea);
+                    frame.add(search);
+
+
+                    addSearchButtonListener();
+                    foundWareArea.setVisible(true);
+                    frame.setVisible(true);
+
+                }
+            }
+        });
+
+    }
+
+
+    private void addSearchButtonListener() {
+        search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == search) {
+                    if (searchWareNameField.getText() != null || searchWareNameField.getText().length() == 0 || searchWareNameField.getText().trim().length() == 0) {
+                        foundWareArea.append(storageModel.getByName(searchWareNameField.getText()).toString());
+                    }
+                }
+            }
+        });
+
+    }
+
 
     private void addOverallPriceListener() {
         jOverallPrice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == jOverallPrice) {
-                    JFrame frame = new JFrame();
+                    JFrame frame = new JFrame("Overall price");
                     JTextArea textArea = new JTextArea();
                     frame.add(textArea);
                     textArea.append(storageModel.showOverallPrice(storageModel.getWares()));
@@ -239,7 +343,8 @@ public class PanelStorage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == jOverallStatistic) {
-                    JFrame frame = new JFrame();
+                    JFrame frame = new JFrame("Overall statistic");
+
                     JTextArea textArea = new JTextArea();
                     frame.add(textArea);
                     textArea.append(storageModel.showInformation(storageModel.getWares()));
@@ -416,8 +521,8 @@ public class PanelStorage extends JFrame {
                     form4.add(wareNameField);
                     form4.add(wareDescription);
                     form4.add(wareDescriptionField);
-                    form4.add(warePoducer);
-                    form4.add(warePoducerField);
+                    form4.add(wareProducer);
+                    form4.add(wareProducerField);
                     form4.add(warePrice);
                     form4.add(warePriceField);
                     form4.add(wareGroup);
@@ -451,10 +556,10 @@ public class PanelStorage extends JFrame {
                         boolean canPutInTable = true;
                         if (!wareGroupField.getText().equals("")) {
                             storageModel.addWare(new Ware(wareNameField.getText(), wareDescriptionField.getText(),
-                                    warePoducerField.getText(), Double.parseDouble(warePriceField.getText()), wareGroupField.getText()));
+                                    wareProducerField.getText(), Double.parseDouble(warePriceField.getText()), wareGroupField.getText()));
 
                             for (int i = 0; i < tableRow; i++) {
-                                if (wareNameField.getText().equals(storageModel.getByName(wareNameField.getText()).getName())) {
+                                if (table.getValueAt(i, 1) != null && table.getValueAt(i, 1).equals(storageModel.getByName(wareNameField.getText()).getName())) {
                                     canPutInTable = false;
                                 }
                             }
@@ -463,8 +568,7 @@ public class PanelStorage extends JFrame {
 
                                 table.setValueAt(wareNameField.getText(), tableRow, 1);
                                 table.setValueAt(wareDescriptionField.getText(), tableRow, 2);
-                                table.setValueAt(warePoducerField.getText(), tableRow, 3);
-                                table.setValueAt(Double.parseDouble(warePriceField.getText()), tableRow, 4);
+                                table.setValueAt(wareProducerField.getText(), tableRow, 3);
                                 table.setValueAt(warePriceField.getText(), tableRow, 5);
                                 tableRow++;
 
@@ -540,7 +644,6 @@ public class PanelStorage extends JFrame {
                                 table.setValueAt(wareNameFieldEdited.getText(), i, 1);
                                 table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
                                 table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
-                                table.setValueAt(Double.parseDouble(warePriceFieldEdited.getText()), i, 4);
                                 table.setValueAt(warePriceFieldEdited.getText(), i, 5);
                                 table.validate();
                             }
@@ -655,11 +758,13 @@ public class PanelStorage extends JFrame {
                         System.out.println(storageModel.getByName(addWareQuantField.getText()).getAmount());
 
                         for (int i = 0; i < tableRow; i++) {
-                            if (table.getValueAt(i, 1).equals(addWareQuantField.getText())) {
+                            if (table.getValueAt(i, 1) != null && table.getValueAt(i, 1).equals(addWareQuantField.getText())) {
                                 table.setValueAt(storageModel.getByName(addWareQuantField.getText()).getAmount(), i, 4);
                                 table.validate();
                             }
                         }
+                        JOptionPane.showMessageDialog(getParent(), "Added " + lAddQuantityOfWareField.getText() + " of " + addWareQuantField.getText());
+
                     }
 
                 }
@@ -719,6 +824,8 @@ public class PanelStorage extends JFrame {
                                 table.validate();
                             }
                         }
+                        JOptionPane.showMessageDialog(getParent(), "Took away " + lDeleteQuantityOfWareField.getText() + " of " + takeAwayQuantNameField.getText());
+
                     }
                 }
             }
