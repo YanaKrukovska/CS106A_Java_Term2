@@ -5,7 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class PanelStorage extends JFrame {
     private Storage storageModel = new Storage();
@@ -79,9 +81,9 @@ public class PanelStorage extends JFrame {
     private JTextArea textAreaGroupStatistic;
     private JTextField groupStatisticNameField;
     private JLabel addWareQuantName = new JLabel("Name of ware");
-    private JTextField addWareQuantField = new JTextField();
+    private JTextField wareNameToAdd = new JTextField();
     private JLabel takeAwayQuantName = new JLabel("Name of ware");
-    private JTextField takeAwayQuantNameField = new JTextField();
+    private JTextField wareNameTakeAwayField = new JTextField();
     private JTextField searchWareNameField = new JTextField();
 
     private static JTable table;
@@ -180,7 +182,7 @@ public class PanelStorage extends JFrame {
         addOverallPriceListener();
         addGroupPriceListener();
         addSearchListener();
-        saveOverallPiceListener();
+        saveOverallPriceListener();
 
         return panel;
     }
@@ -201,13 +203,13 @@ public class PanelStorage extends JFrame {
                     groupPriceNameField = new JTextField();
                     frame.add(label);
                     frame.add(groupPriceNameField);
+                    textAreaGroupPrice.setText("");
                     frame.add(textAreaGroupPrice);
                     frame.add(submit10);
 
-
-                    addSubmitGroupPriceListener();
                     textAreaGroupPrice.setVisible(true);
                     frame.setVisible(true);
+                    addSubmitGroupPriceListener();
 
                 }
             }
@@ -220,8 +222,8 @@ public class PanelStorage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit10) {
-                    if (groupPriceNameField.getText() != null || groupPriceNameField.getText().length() == 0
-                            || groupPriceNameField.getText().trim().length() == 0) {
+                    if (groupPriceNameField.getText() != null) {
+                        textAreaGroupPrice.setText("");
                         textAreaGroupPrice.append(storageModel.showOverallPrice(storageModel.listGroupWares(groupPriceNameField.getText())));
                     }
                 }
@@ -247,6 +249,7 @@ public class PanelStorage extends JFrame {
                     frame.add(searchWareNameField);
                     frame.add(foundWareArea);
                     frame.add(search);
+                    foundWareArea.setText("");
 
                     addSearchButtonListener();
                     foundWareArea.setVisible(true);
@@ -265,6 +268,7 @@ public class PanelStorage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == search) {
                     if (searchWareNameField.getText() != null || searchWareNameField.getText().length() == 0 || searchWareNameField.getText().trim().length() == 0) {
+                        foundWareArea.setText("");
                         foundWareArea.append(storageModel.getByName(searchWareNameField.getText()).toString());
                     }
                 }
@@ -313,6 +317,7 @@ public class PanelStorage extends JFrame {
                     frame.add(groupStatisticNameField);
                     frame.add(textAreaGroupStatistic);
                     frame.add(submit9);
+                    textAreaGroupStatistic.setText("");
                     addSubmitGroupStatisticListener();
                     textAreaGroupStatistic.setVisible(true);
                     frame.setVisible(true);
@@ -328,7 +333,7 @@ public class PanelStorage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit9) {
-
+                    textAreaGroupStatistic.setText("");
                     textAreaGroupStatistic.append(storageModel.showGroupWaresInformation(storageModel.listGroupWares(groupStatisticNameField.getText())));
                 }
             }
@@ -474,19 +479,23 @@ public class PanelStorage extends JFrame {
 
                     for (int i = 0; i < tableRow; i++) {
                         if (table.getValueAt(i, 0) != null && table.getValueAt(i, 0).equals(lDeleteGroupField.getText())) {
-                            table.setValueAt(null, i, 0);
-                            table.setValueAt(null, i, 1);
-                            table.setValueAt(null, i, 2);
-                            table.setValueAt(null, i, 3);
-                            table.setValueAt(null, i, 4);
-                            table.setValueAt(null, i, 5);
-                            table.validate();
+                            clearRow(i);
                         }
                     }
                 }
             }
         });
 
+    }
+
+    private void clearRow(int i) {
+        table.setValueAt(null, i, 0);
+        table.setValueAt(null, i, 1);
+        table.setValueAt(null, i, 2);
+        table.setValueAt(null, i, 3);
+        table.setValueAt(null, i, 4);
+        table.setValueAt(null, i, 5);
+        table.validate();
     }
 
     private void addWareListener() {
@@ -550,7 +559,6 @@ public class PanelStorage extends JFrame {
                             }
                             if (canPutInTable) {
                                 table.setValueAt(wareGroupField.getText(), tableRow, 0);
-
                                 table.setValueAt(wareNameField.getText(), tableRow, 1);
                                 table.setValueAt(wareDescriptionField.getText(), tableRow, 2);
                                 table.setValueAt(wareProducerField.getText(), tableRow, 3);
@@ -606,19 +614,15 @@ public class PanelStorage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit5) {
 
-                    boolean readyToPlay = true;
-                    int taskAmount = checkIfInputIsNumber(warePriceFieldEdited.getText());
-
-                    if (taskAmount == -1) {
-                        JOptionPane.showMessageDialog(getParent(), "It's not a number");
-                        readyToPlay = false;
-                    }
-                    if (readyToPlay) {
+                    if (checkIfInputIsNumber(warePriceFieldEdited.getText()) != -1) {
+                        double amount = storageModel.getByName(wareNameFieldEdited.getText()).getAmount();
                         storageModel.editWare(new Ware(wareNameFieldEdited.getText(), wareDescriptionFieldEdited.getText(),
                                 wareProducerFieldEdited.getText(), Double.parseDouble(warePriceFieldEdited.getText()), wareGroupFieldEdited.getText()));
+                        storageModel.getByName(wareNameFieldEdited.getText()).setAmount(amount);
 
                         for (int i = 0; i < tableRow; i++) {
-                            if (table.getValueAt(i, 0) != null && table.getValueAt(i, 0).equals(wareNameFieldEdited.getText())) {
+                            if (wareNameFieldEdited.getText() != null && table.getValueAt(i, 1).equals(wareNameFieldEdited.getText())) {
+                                storageModel.addGroup(wareGroupFieldEdited.getText());
                                 table.setValueAt(wareGroupFieldEdited.getText(), i, 0);
                                 table.setValueAt(wareNameFieldEdited.getText(), i, 1);
                                 table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
@@ -669,16 +673,10 @@ public class PanelStorage extends JFrame {
 
                     for (int i = 0; i < tableRow; i++) {
                         if (table.getValueAt(i, 1).equals(wareNameToDeleteField.getText())) {
-                            table.setValueAt(null, i, 0);
-                            table.setValueAt(wareNameFieldEdited.getText(), i, 1);
-                            table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
-                            table.setValueAt(wareProducerFieldEdited.getText(), i, 3);
-                            table.setValueAt(Double.parseDouble(warePriceFieldEdited.getText()), i, 4);
-                            table.setValueAt(warePriceFieldEdited.getText(), i, 5);
-                            table.validate();
+                            clearRow(i);
+
                         }
                     }
-
                 }
             }
         });
@@ -700,9 +698,10 @@ public class PanelStorage extends JFrame {
                     form7.setVisible(true);
 
                     form7.add(addWareQuantName);
-                    form7.add(addWareQuantField);
+                    form7.add(wareNameToAdd);
                     form7.add(lAddQuantityOfWare);
                     form7.add(lAddQuantityOfWareField);
+                    lAddQuantityOfWareField.setText("");
 
                     submit7.setBounds(250, 420, 100, 50);
                     form7.add(submit7);
@@ -720,23 +719,17 @@ public class PanelStorage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit7) {
 
-                    boolean readyToPlay = true;
-                    int taskAmount = checkIfInputIsNumber(lAddQuantityOfWareField.getText());
+                    if (checkIfInputIsNumber(lAddQuantityOfWareField.getText()) != -1) {
 
-                    if (taskAmount == -1) {
-                        JOptionPane.showMessageDialog(getParent(), "It's not a number");
-                        readyToPlay = false;
-                    }
-                    if (readyToPlay) {
-                        storageModel.addWareAmount(addWareQuantField.getText(), Double.parseDouble(lAddQuantityOfWareField.getText()));
-
+                        storageModel.addWareAmount(wareNameToAdd.getText(), Double.parseDouble(lAddQuantityOfWareField.getText()));
+                        lAddQuantityOfWareField.setText("");
                         for (int i = 0; i < tableRow; i++) {
-                            if (table.getValueAt(i, 1) != null && table.getValueAt(i, 1).equals(addWareQuantField.getText())) {
-                                table.setValueAt(storageModel.getByName(addWareQuantField.getText()).getAmount(), i, 4);
+                            if (table.getValueAt(i, 1) != null && table.getValueAt(i, 1).equals(wareNameToAdd.getText())) {
+                                table.setValueAt(storageModel.getByName(wareNameToAdd.getText()).getAmount(), i, 4);
                                 table.validate();
+
                             }
                         }
-                        JOptionPane.showMessageDialog(getParent(), "Added " + lAddQuantityOfWareField.getText() + " of " + addWareQuantField.getText());
 
                     }
 
@@ -761,9 +754,10 @@ public class PanelStorage extends JFrame {
                     form8.setVisible(true);
 
                     form8.add(takeAwayQuantName);
-                    form8.add(takeAwayQuantNameField);
+                    form8.add(wareNameTakeAwayField);
                     form8.add(lDeleteQuantityOfWare);
                     form8.add(lDeleteQuantityOfWareField);
+                    lDeleteQuantityOfWareField.setText("");
 
                     submit8.setBounds(250, 420, 100, 50);
                     form8.add(submit8);
@@ -780,24 +774,16 @@ public class PanelStorage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit8) {
-                    boolean readyToPlay = true;
-                    int taskAmount = checkIfInputIsNumber(lDeleteQuantityOfWareField.getText());
 
-                    if (taskAmount == -1) {
-                        JOptionPane.showMessageDialog(getParent(), "It's not a number");
-                        readyToPlay = false;
-                    }
-                    if (readyToPlay) {
-                        storageModel.deleteWareAmount(takeAwayQuantNameField.getText(), Double.parseDouble(lDeleteQuantityOfWareField.getText()));
-                        System.out.println(storageModel.getByName(takeAwayQuantNameField.getText()).getAmount());
+                    if (checkIfInputIsNumber(lDeleteQuantityOfWareField.getText()) != -1) {
+                        storageModel.deleteWareAmount(wareNameTakeAwayField.getText(), Double.parseDouble(lDeleteQuantityOfWareField.getText()));
 
                         for (int i = 0; i < tableRow; i++) {
-                            if (table.getValueAt(i, 1).equals(takeAwayQuantNameField.getText())) {
-                                table.setValueAt(storageModel.getByName(takeAwayQuantNameField.getText()).getAmount(), i, 4);
+                            if (table.getValueAt(i, 1) != null && table.getValueAt(i, 1).equals(wareNameTakeAwayField.getText())) {
+                                table.setValueAt(storageModel.getByName(wareNameTakeAwayField.getText()).getAmount(), i, 4);
                                 table.validate();
                             }
                         }
-                        JOptionPane.showMessageDialog(getParent(), "Took away " + lDeleteQuantityOfWareField.getText() + " of " + takeAwayQuantNameField.getText());
 
                     }
                 }
@@ -806,7 +792,7 @@ public class PanelStorage extends JFrame {
 
     }
 
-    public int checkIfInputIsNumber(String input) {
+    private int checkIfInputIsNumber(String input) {
         int number;
         try {
             number = Integer.valueOf(input);
@@ -816,15 +802,15 @@ public class PanelStorage extends JFrame {
         return number;
     }
 
-    private void saveOverallPiceListener() {
+    private void saveOverallPriceListener() {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == save) {
                     try {
                         save(storageModel.showInformation(storageModel.getWares()));
-                    } catch (NullPointerException ex){
-                        System.out.println("You don`t add information in the table. File can`t be save");
+                    } catch (NullPointerException ex) {
+                        System.out.println("You didn't add information in the table. File can`t be save");
                     }
                 }
             }
@@ -832,14 +818,12 @@ public class PanelStorage extends JFrame {
 
     }
 
-    static void save(String text1) {
+    private static void save(String text1) {
         ObjectOutputStream out = null;
         try {
             out = new ObjectOutputStream(new FileOutputStream(PATH + "OverallPrice.txt"));
             out.writeObject(text1);
             System.out.println(" ");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
