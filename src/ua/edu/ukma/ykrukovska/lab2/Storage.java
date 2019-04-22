@@ -159,7 +159,7 @@ public class Storage implements WareService {
     public String showInformation(List<Ware> wares) {
 
         StringBuilder sb = new StringBuilder("Statistics: ");
-        sb.append("Ware amount: ").append(wares.size()).append(System.lineSeparator());
+        sb.append("Ware amount: ").append(wares.size()).append(System.lineSeparator()).append(getGroups().toString()).append(System.lineSeparator());
         Iterator<Ware> iterator = wares.iterator();
 
         while (iterator.hasNext()) {

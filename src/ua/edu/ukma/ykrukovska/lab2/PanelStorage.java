@@ -5,11 +5,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class PanelStorage extends JFrame {
     private Storage storageModel = new Storage();
 
-
+    private static final String PATH = "C:\\IdeaProjects\\Files\\";
     private JButton jAddGroup = new JButton("Add Group");
     private JButton jEditGroup = new JButton("Edit Group");
     private JButton jDeleteGroup = new JButton("Delete Group");
@@ -37,6 +38,7 @@ public class PanelStorage extends JFrame {
     private JButton submit9 = new JButton("Submit");
     private JButton submit10 = new JButton("Submit");
     private JButton search = new JButton("Search");
+    private JButton save = new JButton("Save");
 
     private JLabel lAddGroup = new JLabel("Name group");
     private JTextField lAddGroupField = new JTextField();
@@ -45,8 +47,6 @@ public class PanelStorage extends JFrame {
     private JTextField lEditGroupOldNameField = new JTextField();
     private JLabel lDeleteGroup = new JLabel("Delete group");
     private JTextField lDeleteGroupField = new JTextField();
-    private JLabel lAddWare = new JLabel("Add name of ware");
-    private JTextField lAddWareField = new JTextField();
     private JLabel lAddQuantityOfWare = new JLabel("Add quantity of ware");
     private JTextField lAddQuantityOfWareField = new JTextField();
     private JLabel lDeleteQuantityOfWare = new JLabel("Delete quantity of ware");
@@ -70,7 +70,7 @@ public class PanelStorage extends JFrame {
     private JLabel wareGroupEdited = new JLabel("Group");
     private JTextField wareNameFieldEdited = new JTextField();
     private JTextField wareDescriptionFieldEdited = new JTextField();
-    private JTextField warePoducerFieldEdited = new JTextField();
+    private JTextField wareProducerFieldEdited = new JTextField();
     private JTextField warePriceFieldEdited = new JTextField();
     private JTextField wareGroupFieldEdited = new JTextField();
 
@@ -82,7 +82,6 @@ public class PanelStorage extends JFrame {
     private JTextField addWareQuantField = new JTextField();
     private JLabel takeAwayQuantName = new JLabel("Name of ware");
     private JTextField takeAwayQuantNameField = new JTextField();
-    private JLabel searchWareName = new JLabel("Name of ware you want to find");
     private JTextField searchWareNameField = new JTextField();
 
     private static JTable table;
@@ -163,9 +162,10 @@ public class PanelStorage extends JFrame {
         panel.add(jOverallPrice);
         jGroupPrice.setBounds(150, 550, 200, 50);
         panel.add(jGroupPrice);
-
         searchWare.setBounds(150, 600, 200, 50);
         panel.add(searchWare);
+        save.setBounds(150, 650, 200, 50);
+        panel.add(save);
 
         addGroupListener();
         editGroupListener();
@@ -180,6 +180,7 @@ public class PanelStorage extends JFrame {
         addOverallPriceListener();
         addGroupPriceListener();
         addSearchListener();
+        saveOverallPiceListener();
 
         return panel;
     }
@@ -247,7 +248,6 @@ public class PanelStorage extends JFrame {
                     frame.add(foundWareArea);
                     frame.add(search);
 
-
                     addSearchButtonListener();
                     foundWareArea.setVisible(true);
                     frame.setVisible(true);
@@ -289,7 +289,6 @@ public class PanelStorage extends JFrame {
                     frame.setSize(400, 500);
                     frame.setLocation(800, 100);
                     frame.setVisible(true);
-
                 }
             }
         });
@@ -303,6 +302,7 @@ public class PanelStorage extends JFrame {
                 if (e.getSource() == jGroupStatistic) {
                     JFrame frame = new JFrame("Group statistic");
                     textAreaGroupStatistic = new JTextArea();
+                    textAreaGroupStatistic.revalidate();
                     frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                     frame.setSize(400, 500);
                     frame.setLocation(800, 100);
@@ -313,8 +313,6 @@ public class PanelStorage extends JFrame {
                     frame.add(groupStatisticNameField);
                     frame.add(textAreaGroupStatistic);
                     frame.add(submit9);
-
-
                     addSubmitGroupStatisticListener();
                     textAreaGroupStatistic.setVisible(true);
                     frame.setVisible(true);
@@ -344,7 +342,6 @@ public class PanelStorage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == jOverallStatistic) {
                     JFrame frame = new JFrame("Overall statistic");
-
                     JTextArea textArea = new JTextArea();
                     frame.add(textArea);
                     textArea.append(storageModel.showInformation(storageModel.getWares()));
@@ -374,17 +371,10 @@ public class PanelStorage extends JFrame {
                     form1.setLocation(800, 100);
                     frame.setVisible(false);
                     form1.setVisible(true);
-
-//                    lAddGroup.setBounds(100, 100, 120, 50);
-//                    lAddGroupField.setBounds(200, 100, 270, 40);
                     form1.add(lAddGroup);
                     form1.add(lAddGroupField);
-
-//                    submit.setBounds(250, 420, 100, 50);
                     form1.add(submit1);
-
                     addGrSubmitListener();
-
 
                 }
             }
@@ -398,7 +388,6 @@ public class PanelStorage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit1) {
                     storageModel.addGroup(lAddGroupField.getText());
-
                 }
             }
         });
@@ -418,12 +407,10 @@ public class PanelStorage extends JFrame {
                     form2.setLocation(800, 100);
                     frame.setVisible(false);
                     form2.setVisible(true);
-
                     form2.add(lEditGroup);
                     form2.add(lEditGroupOldNameField);
                     form2.add(lEditGroupField);
                     form2.add(submit2);
-
                     editGrSubmitListener();
 
                 }
@@ -486,7 +473,7 @@ public class PanelStorage extends JFrame {
                     storageModel.deleteGroup(lDeleteGroupField.getText());
 
                     for (int i = 0; i < tableRow; i++) {
-                        if (table.getValueAt(i, 0).equals(lDeleteGroupField.getText())) {
+                        if (table.getValueAt(i, 0) != null && table.getValueAt(i, 0).equals(lDeleteGroupField.getText())) {
                             table.setValueAt(null, i, 0);
                             table.setValueAt(null, i, 1);
                             table.setValueAt(null, i, 2);
@@ -495,9 +482,7 @@ public class PanelStorage extends JFrame {
                             table.setValueAt(null, i, 5);
                             table.validate();
                         }
-
                     }
-
                 }
             }
         });
@@ -571,8 +556,6 @@ public class PanelStorage extends JFrame {
                                 table.setValueAt(wareProducerField.getText(), tableRow, 3);
                                 table.setValueAt(warePriceField.getText(), tableRow, 5);
                                 tableRow++;
-
-
                                 table.validate();
                             }
 
@@ -598,19 +581,16 @@ public class PanelStorage extends JFrame {
                     form5.setLocation(800, 100);
                     frame.setVisible(false);
                     form5.setVisible(true);
-
-
                     form5.add(wareNameEdited);
                     form5.add(wareNameFieldEdited);
                     form5.add(wareDescriptionEdited);
                     form5.add(wareDescriptionFieldEdited);
                     form5.add(warePoducerEdited);
-                    form5.add(warePoducerFieldEdited);
+                    form5.add(wareProducerFieldEdited);
                     form5.add(warePriceEdited);
                     form5.add(warePriceFieldEdited);
                     form5.add(wareGroupEdited);
                     form5.add(wareGroupFieldEdited);
-
                     submit5.setBounds(250, 420, 200, 50);
                     form5.add(submit5);
                     editWareSubmitListener();
@@ -635,24 +615,19 @@ public class PanelStorage extends JFrame {
                     }
                     if (readyToPlay) {
                         storageModel.editWare(new Ware(wareNameFieldEdited.getText(), wareDescriptionFieldEdited.getText(),
-                                warePoducerFieldEdited.getText(), Double.parseDouble(warePriceFieldEdited.getText()), wareGroupFieldEdited.getText()));
-
+                                wareProducerFieldEdited.getText(), Double.parseDouble(warePriceFieldEdited.getText()), wareGroupFieldEdited.getText()));
 
                         for (int i = 0; i < tableRow; i++) {
-                            if (table.getValueAt(i, 0).equals(wareNameFieldEdited.getText())) {
+                            if (table.getValueAt(i, 0) != null && table.getValueAt(i, 0).equals(wareNameFieldEdited.getText())) {
                                 table.setValueAt(wareGroupFieldEdited.getText(), i, 0);
                                 table.setValueAt(wareNameFieldEdited.getText(), i, 1);
                                 table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
-                                table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
+                                table.setValueAt(wareProducerFieldEdited.getText(), i, 3);
                                 table.setValueAt(warePriceFieldEdited.getText(), i, 5);
                                 table.validate();
                             }
                         }
-
-
                     }
-
-
                 }
             }
         });
@@ -676,7 +651,6 @@ public class PanelStorage extends JFrame {
                     form6.add(wareNameToDelete);
                     form6.add(wareNameToDeleteField);
 
-
                     submit6.setBounds(250, 420, 100, 50);
                     form6.add(submit6);
                     deleteWareSubmitListener();
@@ -698,7 +672,7 @@ public class PanelStorage extends JFrame {
                             table.setValueAt(null, i, 0);
                             table.setValueAt(wareNameFieldEdited.getText(), i, 1);
                             table.setValueAt(wareDescriptionFieldEdited.getText(), i, 2);
-                            table.setValueAt(warePoducerFieldEdited.getText(), i, 3);
+                            table.setValueAt(wareProducerFieldEdited.getText(), i, 3);
                             table.setValueAt(Double.parseDouble(warePriceFieldEdited.getText()), i, 4);
                             table.setValueAt(warePriceFieldEdited.getText(), i, 5);
                             table.validate();
@@ -755,7 +729,6 @@ public class PanelStorage extends JFrame {
                     }
                     if (readyToPlay) {
                         storageModel.addWareAmount(addWareQuantField.getText(), Double.parseDouble(lAddQuantityOfWareField.getText()));
-                        System.out.println(storageModel.getByName(addWareQuantField.getText()).getAmount());
 
                         for (int i = 0; i < tableRow; i++) {
                             if (table.getValueAt(i, 1) != null && table.getValueAt(i, 1).equals(addWareQuantField.getText())) {
@@ -841,6 +814,44 @@ public class PanelStorage extends JFrame {
             return -1;
         }
         return number;
+    }
+
+    private void saveOverallPiceListener() {
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == save) {
+                    try {
+                        save(storageModel.showInformation(storageModel.getWares()));
+                    } catch (NullPointerException ex){
+                        System.out.println("You don`t add information in the table. File can`t be save");
+                    }
+                }
+            }
+        });
+
+    }
+
+    static void save(String text1) {
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(PATH + "OverallPrice.txt"));
+            out.writeObject(text1);
+            System.out.println(" ");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.flush();
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
