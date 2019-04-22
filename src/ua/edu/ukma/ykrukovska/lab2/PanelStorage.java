@@ -465,6 +465,8 @@ public class PanelStorage extends JFrame {
                                 table.setValueAt(warePoducerField.getText(), tableRow, 3);
                                 table.setValueAt(warePriceField.getText(), tableRow, 5);
                                 tableRow++;
+
+
                                 table.validate();
                             }
 
