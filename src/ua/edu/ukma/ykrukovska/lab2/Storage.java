@@ -158,7 +158,7 @@ public class Storage implements WareService {
     @Override
     public String showInformation(List<Ware> wares) {
 
-        StringBuilder sb = new StringBuilder("Statistics");
+        StringBuilder sb = new StringBuilder("Statistics: ");
         sb.append("Ware amount: ").append(wares.size()).append(System.lineSeparator());
         Iterator<Ware> iterator = wares.iterator();
 
@@ -194,7 +194,7 @@ public class Storage implements WareService {
         double price = 0;
         while (iterator.hasNext()) {
             Ware wareNext = iterator.next();
-            price += wareNext.getPrice() * wareNext.getAmount();
+            price = price +( wareNext.getPrice() * wareNext.getAmount());
         }
         sb.append("Overall price: ").append(price).append(System.lineSeparator());
 

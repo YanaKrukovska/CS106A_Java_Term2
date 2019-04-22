@@ -82,8 +82,9 @@ public class PanelStorage extends JFrame {
     private JTextField groupStatisticNameField;
     private JLabel addWareQuantName = new JLabel("Name of ware");
     private JTextField addWareQuantField = new JTextField();
-    private JLabel takeAwayQuantName = new JLabel("Name of ware");;
-    private JTextField takeAwayQuantNameField= new JTextField();
+    private JLabel takeAwayQuantName = new JLabel("Name of ware");
+    ;
+    private JTextField takeAwayQuantNameField = new JTextField();
 
     public static void createTable() {
         JFrame frameTable = new JFrame("Table");
@@ -169,7 +170,7 @@ public class PanelStorage extends JFrame {
         return panel;
     }
 
-    private void  addOverallPriceListener() {
+    private void addOverallPriceListener() {
         jOverallPrice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,9 +202,9 @@ public class PanelStorage extends JFrame {
                     frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                     frame.setSize(400, 500);
                     frame.setLocation(800, 100);
-                    frame.setLayout(new GridLayout(4,1));
+                    frame.setLayout(new GridLayout(4, 1));
                     JLabel label = new JLabel("Group name");
-                     groupStatisticNameField = new JTextField();
+                    groupStatisticNameField = new JTextField();
                     frame.add(label);
                     frame.add(groupStatisticNameField);
                     frame.add(textAreaGroupStatistic);
@@ -333,6 +334,13 @@ public class PanelStorage extends JFrame {
                 if (e.getSource() == submit2) {
                     storageModel.editGroup(lEditGroupOldNameField.getText(), lEditGroupField.getText());
 
+                    for (int i = 0; i < tableRow; i++) {
+                        if (table.getValueAt(i, 0).equals(lEditGroupOldNameField.getText())) {
+                            table.setValueAt(lEditGroupField.getText(), i, 0);
+                            table.validate();
+                        }
+                    }
+
                 }
             }
         });
@@ -371,7 +379,20 @@ public class PanelStorage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == submit3) {
                     storageModel.deleteGroup(lDeleteGroupField.getText());
-                    System.out.println(storageModel.getGroups());
+
+                    for (int i = 0; i < tableRow; i++) {
+                        if (table.getValueAt(i, 0).equals(lDeleteGroupField.getText())) {
+                            table.setValueAt(null, i, 0);
+                            table.setValueAt(null, i, 1);
+                            table.setValueAt(null, i, 2);
+                            table.setValueAt(null, i, 3);
+                            table.setValueAt(null, i, 4);
+                            table.setValueAt(null, i, 5);
+                            table.validate();
+                        }
+
+                    }
+
                 }
             }
         });
@@ -426,18 +447,28 @@ public class PanelStorage extends JFrame {
                     }
                     if (readyToPlay) {
 
-                        storageModel.addWare(new Ware(wareNameField.getText(), wareDescriptionField.getText(),
-                                warePoducerField.getText(), 0, wareGroupField.getText()));
+                        boolean canPutInTable = true;
+                        if (!wareGroupField.getText().equals("")) {
+                            storageModel.addWare(new Ware(wareNameField.getText(), wareDescriptionField.getText(),
+                                    warePoducerField.getText(), 0, wareGroupField.getText()));
 
+                            for (int i = 0; i < tableRow; i++) {
+                                if (wareNameField.getText().equals(storageModel.getByName(wareNameField.getText()).getName())) {
+                                    canPutInTable = false;
+                                }
+                            }
+                            if (canPutInTable) {
+                                table.setValueAt(wareGroupField.getText(), tableRow, 0);
 
-                        table.setValueAt(wareGroupField.getText(), tableRow, 0);
-                        table.setValueAt(wareNameField.getText(), tableRow, 1);
-                        table.setValueAt(wareDescriptionField.getText(), tableRow, 2);
-                        table.setValueAt(warePoducerField.getText(), tableRow, 3);
-                        table.setValueAt(warePriceField.getText(), tableRow, 5);
-                        tableRow++;
-                        table.validate();
+                                table.setValueAt(wareNameField.getText(), tableRow, 1);
+                                table.setValueAt(wareDescriptionField.getText(), tableRow, 2);
+                                table.setValueAt(warePoducerField.getText(), tableRow, 3);
+                                table.setValueAt(warePriceField.getText(), tableRow, 5);
+                                tableRow++;
+                                table.validate();
+                            }
 
+                        }
                     }
 
                 }
