@@ -11,19 +11,15 @@ import java.io.IOException;
 
 public class GraphApp extends JFrame {
 
-    private JPanel graphPanel = new JPanel();
-    private JPanel infoPanel = new JPanel();
-    private final static int WIDTH = 1000;
+    private final static int WIDTH = 900;
     private final static int HEIGHT = 450;
     private GraphCanvas canvas;
-    public JTextField aField = new JTextField();
-    public JTextField krokField = new JTextField();
-    public JTextField xMinField = new JTextField();
-    public JTextField xMaxField = new JTextField();
+    private JTextField aField = new JTextField();
+    private JTextField stepField = new JTextField();
+    private JTextField xMinField = new JTextField();
+    private JTextField xMaxField = new JTextField();
 
-    public double krokValue;
-    public double minX;
-    public double maxX;
+    private double step;
     public double a;
 
     public GraphApp() {
@@ -34,13 +30,12 @@ public class GraphApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
+        JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(1, 10));
-        infoPanel.setSize(new Dimension(1000, 50));
+        infoPanel.setSize(new Dimension(WIDTH, 50));
 
         JLabel aLabel = new JLabel("a = ");
-
-        JLabel krok = new JLabel("Krok = ");
-
+        JLabel step = new JLabel("Step = ");
         JLabel xMin = new JLabel("X min");
         JLabel xMax = new JLabel("X max");
 
@@ -58,13 +53,14 @@ public class GraphApp extends JFrame {
         infoPanel.add(xMinField);
         infoPanel.add(xMax);
         infoPanel.add(xMaxField);
-        infoPanel.add(krok);
-        infoPanel.add(krokField);
+        infoPanel.add(step);
+        infoPanel.add(stepField);
         infoPanel.add(saveButton);
         infoPanel.add(drawButton);
 
 
         add(infoPanel, BorderLayout.NORTH);
+        JPanel graphPanel = new JPanel();
         add(graphPanel, BorderLayout.SOUTH);
         setVisible(true);
 
@@ -76,15 +72,52 @@ public class GraphApp extends JFrame {
         drawButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
+                if (checkValues()) {
                     drawGraphCanvas();
-                } catch (NumberFormatException f) {
-                  //  JOptionPane.showMessageDialog(new JFrame(),
-                   //         "Wrong input", "Wrong value!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
+    }
+
+    private boolean checkValues() {
+        boolean canDraw = false;
+
+        if (isNull()) {
+            JOptionPane.showMessageDialog(new JFrame(),
+                    "Insert values before you draw", "Oops", JOptionPane.ERROR_MESSAGE);
+            return false;
+
+        } else {
+            try {
+                a = Double.parseDouble(aField.getText());
+                step = Double.parseDouble(stepField.getText());
+
+                if (Double.parseDouble(xMinField.getText()) <= Double.parseDouble(xMaxField.getText())) {
+                    canDraw = true;
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "x min can't be bigger than x max", "Wrong values!", JOptionPane.ERROR_MESSAGE);
+                }
+                if (Double.parseDouble(stepField.getText()) <= 0) {
+                    canDraw = false;
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "step can't be less than zero", "Wrong value!", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (NumberFormatException f) {
+                JOptionPane.showMessageDialog(new JFrame(),
+                        "Wrong input - it must be a number", "Wrong value!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return canDraw;
+    }
+
+    private boolean isNull() {
+        return xMinField.getText() == null || xMinField.getText().length() == 0 ||
+                xMaxField.getText() == null || xMaxField.getText().length() == 0 ||
+                aField.getText() == null || aField.getText().length() == 0 ||
+                stepField.getText() == null || stepField.getText().length() == 0;
     }
 
     private void addSaveButtonListener(JButton saveButton) {
@@ -96,7 +129,7 @@ public class GraphApp extends JFrame {
                 if (ret == JFileChooser.APPROVE_OPTION) {
                     File file = fileToSave.getSelectedFile();
                     try {
-                        BufferedImage image = new BufferedImage(getWidth(), getHeight() - 50, BufferedImage.TYPE_INT_RGB);
+                        BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
                         Graphics2D graphics2D = image.createGraphics();
                         getContentPane().paint(graphics2D);
                         ImageIO.write(image, "jpeg", file);
@@ -113,20 +146,16 @@ public class GraphApp extends JFrame {
         });
     }
 
-    public void drawGraphCanvas() {
+    private void drawGraphCanvas() {
         if (canvas != null) {
             this.remove(canvas);
         }
-        /*krokValue = Double.parseDouble(krokField.getText());
-        minX = Double.parseDouble(xMinField.getText());
-        maxX = Double.parseDouble(xMaxField.getText());
-        a = Double.parseDouble(aField.getText());*/
+        step = Double.parseDouble(stepField.getText());
+        double minX = Double.parseDouble(xMinField.getText());
+        double maxX = Double.parseDouble(xMaxField.getText());
+        a = Double.parseDouble(aField.getText());
 
-        krokValue = 1;
-        minX = -1;
-        maxX = 1;
-        a = 1;
-        canvas = new GraphCanvas(krokValue, minX, maxX, a);
+        canvas = new GraphCanvas(step, minX, maxX, a);
 
         this.add(canvas);
         this.setVisible(true);
