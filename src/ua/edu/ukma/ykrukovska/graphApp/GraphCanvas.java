@@ -12,12 +12,14 @@ public class GraphCanvas extends JComponent {
     private double a;
     private static final double SCALE = 50;
 
+
     public GraphCanvas(double step, double xMin, double xMax, double a) {
         this.step = step;
         this.xMin = xMin;
         this.xMax = xMax;
         this.a = a;
     }
+
 
     @Override
     public void paint(Graphics g) {
@@ -44,7 +46,6 @@ public class GraphCanvas extends JComponent {
             x2 = x1 + step;
             y2 =  (FunctionCalculator.calculate(x2, a)) ;
             gr.draw(new Line2D.Double(xShift + x1*SCALE, yShift - y1*SCALE, xShift+ x2*SCALE, yShift - y2*SCALE));
-            System.out.println("x1 = " + x1 + " " + y1);
             x1 = x2;
             y1 = y2;
 
@@ -80,6 +81,7 @@ public class GraphCanvas extends JComponent {
             gr.drawString(Double.toString((xNegative)), ((getWidth() / 2) - c), getHeight() / 2 + 10);
         }
     }
+
 
     private void drawLines(Graphics2D gr) {
         gr.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, getWidth());
