@@ -9,37 +9,4 @@ public class FunctionCalculator {
 
     }
 
-    public static double getMaxY(double xMin, double xMax, double a, double step){
-        double result = Double.MIN_VALUE;
-
-        double currentX = xMin;
-        do {
-            double currentY = calculate(currentX,a);
-            if (currentY > result){
-                result = currentY;
-            }
-            currentX+=step;
-
-        } while (currentX <= xMax);
-
-
-        return result;
-    }
-
-    public static double getMinY(double xMin, double xMax, double a, double step){
-        double result = Double.MAX_VALUE;
-
-        double currentX = xMin;
-        do {
-            double currentY = calculate(currentX,a);
-            if (currentY < result){
-                result = currentY;
-            }
-            currentX+=step;
-
-        } while (currentX <= xMax);
-
-
-        return result;
-    }
 }
