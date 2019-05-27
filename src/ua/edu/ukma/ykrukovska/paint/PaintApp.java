@@ -50,6 +50,8 @@ public class PaintApp extends JFrame {
 
     public PaintApp() {
 
+        Drawer draw = new Drawer();
+        draw.paint(g);
         setTitle("Paint");
         setSize(WIDTH, HEIGHT);
         setLayout(new GridLayout(1, 2));
@@ -71,27 +73,7 @@ public class PaintApp extends JFrame {
 
         Action loadAction = new AbstractAction("Open") {
             public void actionPerformed(ActionEvent event) {
-                JFileChooser jf = new JFileChooser();
-                int result = jf.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        // the frame size depends on the picture size
-                        fileName = jf.getSelectedFile().getAbsolutePath();
-                        File iF = new File(fileName);
-                        jf.addChoosableFileFilter(new TextFileFilter(".png"));
-                        jf.addChoosableFileFilter(new TextFileFilter(".jpg"));
-                        image = ImageIO.read(iF);
-                        loading = true;
-                        setSize(image.getWidth() + 40, image.getWidth() + 80);
-                        drawingSpacePanel.setSize(image.getWidth(), image.getWidth());
-                        drawingSpacePanel.repaint();
-                    } catch (FileNotFoundException ex) {
-                        JOptionPane.showMessageDialog(frame, "This file doesn't exist");
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(frame, "The exception of input/output");
-                    } catch (Exception ignored) {
-                    }
-                }
+
             }
         };
         JMenuItem loadMenu = new JMenuItem(loadAction);
@@ -99,29 +81,7 @@ public class PaintApp extends JFrame {
 
         Action saveAction = new AbstractAction("Save") {
             public void actionPerformed(ActionEvent event) {
-                try {
-                    JFileChooser jf = new JFileChooser();
-                    // Creating file filters
-                    TextFileFilter pngFilter = new TextFileFilter(".png");
-                    TextFileFilter jpgFilter = new TextFileFilter(".jpg");
-                    if (fileName == null) {
-                        // Adding filters
-                        jf.addChoosableFileFilter(pngFilter);
-                        jf.addChoosableFileFilter(jpgFilter);
-                        int result = jf.showSaveDialog(null);
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            fileName = jf.getSelectedFile().getAbsolutePath();
-                        }
-                    }
-                    // check which filter was choosen
-                    if (jf.getFileFilter() == pngFilter) {
-                        ImageIO.write(image, "png", new File(fileName + ".png"));
-                    } else {
-                        ImageIO.write(image, "jpeg", new File(fileName + ".jpg"));
-                    }
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Error of input/output");
-                }
+            // hello
             }
         };
         JMenuItem saveMenu = new JMenuItem(saveAction);
@@ -130,22 +90,30 @@ public class PaintApp extends JFrame {
         Action saveAsAction = new AbstractAction("Save as...") {
             public void actionPerformed(ActionEvent event) {
 
-                JFileChooser fileToSave = new JFileChooser();
-                int ret = fileToSave.showDialog(null, "Save");
-                if (ret == JFileChooser.APPROVE_OPTION) {
-                    File file = fileToSave.getSelectedFile();
+
+          //          JFileChooser jf = new JFileChooser();
+                //   int result = jf.showSaveDialog(null);
+               //    if (result == JFileChooser.APPROVE_OPTION) {
+                        //fileName = jf.getSelectedFile().getAbsolutePath();
 
                     try {
-                        BufferedImage image = new BufferedImage(drawingSpacePanel.getWidth(),
-                                drawingSpacePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+                        Robot robot = new Robot();
+                        String format = "jpeg";
 
-                        Graphics2D g2d = image.createGraphics();
-                        drawingSpacePanel.print(g2d);
-                        g2d.dispose();
-                        ImageIO.write(image, ".jpg", file);
+                        Point p = new Point(drawingSpacePanel.getLocation());
+                        Dimension d = new Dimension(drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight());
+                        Rectangle captureRect = new Rectangle(p, d);
+
+                        BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
+                        ImageIO.write(screenFullImage, format, new File("C:\\IdeaProjects\\Files\\Hello.jpeg"));
+
+                        System.out.println("A partial screenshot saved!");
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }}
+                    } catch (AWTException e) {
+                        e.printStackTrace();
+                    }
+              //  }
 
            /*     try {
                     JFileChooser jf = new JFileChooser();
@@ -173,51 +141,16 @@ public class PaintApp extends JFrame {
 
 
         setSizeMenu(sizeMenu);
-
-
-        Action clearAction = new AbstractAction("Clear") {
-            public void actionPerformed(ActionEvent event) {
-                drawingSpacePanel.repaint();
-            }
-        };
-
-        JMenuItem clearMenu = new JMenuItem(clearAction);
-        menuBar.add(clearMenu);
-
-        JColorChooser colorChooser = new JColorChooser(Color.white);
-        JPanel panel = new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(getWidth() / 2, getHeight());
-            }
-        };
-
+        setClearMenu(menuBar);
+        JColorChooser colorChooser = setColorChooserPanel();
+        JPanel panel = setPanel();
         textSizeSlider.setPaintTicks(true);
-
         setInstrumentsPanel();
-
-        setColorChooserPanel(colorChooser);
-
-        panel.add(instrumentsPanel);
-        panel.add(colorChooserPanel);
-        panel.setVisible(true);
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setVisible(true);
-        panel.setOpaque(true);
-
-        drawingSpacePanel = new
-
-                MyPanel(image);
-        drawingSpacePanel.setBackground(Color.WHITE);
-        drawingSpacePanel.setVisible(true);
-        drawingSpacePanel.setOpaque(true);
-
+        setDrawingPanel();
         add(drawingSpacePanel);
-
         add(scrollPane);
-
-        // JScrollPane scrollDrawingPane = new JScrollPane(drawingSpacePanel);
-        //scrollDrawingPane.setVisible(true);
         setVisible(true);
 
 
@@ -366,31 +299,54 @@ public class PaintApp extends JFrame {
             }
         });
 
-      /* addComponentListener(new ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                // if loading then change the size in the code of loading
-                if (!loading) {
-                  //  drawingSpacePanel.setSize(frame.getWidth() - 40, frame.getHeight() - 80);
-                    BufferedImage tempImage = new BufferedImage(drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight(),
-                            BufferedImage.TYPE_INT_RGB);
-                    Graphics2D d2 = tempImage.createGraphics();
-                    d2.setColor(Color.white);
-                    d2.fillRect(0, 0, drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight());
-                    tempImage.setData(image.getRaster());
-                    image = tempImage;
-                    drawingSpacePanel.repaint();
-                }
-                loading = false;
-            }
-        });
-        */
 
-        //    add(scrollDrawingPane);
 
 
         setVisible(true);
 
     }
+
+    protected JPanel setPanel() {
+        JPanel panel = new JPanel() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(getWidth() / 2, getHeight());
+            }
+        };
+        panel.add(instrumentsPanel);
+        panel.add(colorChooserPanel);
+        panel.setOpaque(true);
+        panel.setVisible(true);
+        return panel;
+    }
+
+    protected JColorChooser setColorChooserPanel() {
+        JColorChooser colorChooser = new JColorChooser(Color.white);
+
+        colorChooserPanel.add(colorChooser);
+        colorChooserPanel.setBounds(getWidth() / 2, getHeight() / 3, getWidth() / 2, getHeight() - getHeight() / 3);
+        return colorChooser;
+    }
+
+    protected void setClearMenu(JMenuBar menuBar) {
+        Action clearAction = new AbstractAction("Clear") {
+            public void actionPerformed(ActionEvent event) {
+                drawingSpacePanel.repaint();
+            }
+        };
+
+        JMenuItem clearMenu = new JMenuItem(clearAction);
+        menuBar.add(clearMenu);
+    }
+
+    protected void setDrawingPanel() {
+        drawingSpacePanel = new MyPanel(image);
+        drawingSpacePanel.setBackground(Color.WHITE);
+        drawingSpacePanel.setVisible(true);
+        drawingSpacePanel.setOpaque(true);
+    }
+
+
 
     private void setSizeMenu(JMenu sizeMenu) {
         Action smallSizeAction = new AbstractAction("Small") {
@@ -418,53 +374,36 @@ public class PaintApp extends JFrame {
         sizeMenu.add(bigSizeItem);
     }
 
-    private void setColorChooserPanel(JColorChooser colorChooser) {
-        colorChooserPanel.add(colorChooser);
-        colorChooserPanel.setBounds(getWidth() / 2, getHeight() / 3, getWidth() / 2, getHeight() - getHeight() / 3);
-    }
+
 
     private void setInstrumentsPanel() {
         instrumentsPanel.setLayout(new GridLayout(4, 3));
-        pencilButton.addActionListener(event -> type = 0);
+        addActionListeners();
         instrumentsPanel.add(pencilButton);
-        brushButton.addActionListener(event -> type = 1);
         instrumentsPanel.add(brushButton);
-        eraserButton.addActionListener(event -> type = 2);
         instrumentsPanel.add(eraserButton);
-        textButton.addActionListener(event -> type = 3);
         instrumentsPanel.add(textButton);
         instrumentsPanel.add(textSizeSlider);
-
-        lineButton.addActionListener(event -> type = 4);
         instrumentsPanel.add(lineButton);
-        ellipseButton.addActionListener(event -> type = 5);
         instrumentsPanel.add(ellipseButton);
-        filledEllipseButton.addActionListener(event -> type = 6);
         instrumentsPanel.add(filledEllipseButton);
-        rectangleButton.addActionListener(event -> type = 7);
         instrumentsPanel.add(rectangleButton);
-        filledRectangleButton.addActionListener(event -> type = 8);
         instrumentsPanel.add(filledRectangleButton);
-
 
         instrumentsPanel.setBounds(getWidth() / 2, 0, getWidth() / 2, getHeight() / 3);
     }
 
-    class TextFileFilter extends FileFilter {
-        private String extension;
-
-        public TextFileFilter(String extension) {
-            this.extension = extension;
-        }
-
-        public boolean accept(java.io.File file) {
-            if (file.isDirectory()) return true;
-            return (file.getName().endsWith(extension));
-        }
-
-        public String getDescription() {
-            return "*" + extension;
-        }
+    private void addActionListeners() {
+        pencilButton.addActionListener(event -> type = 0);
+        brushButton.addActionListener(event -> type = 1);
+        eraserButton.addActionListener(event -> type = 2);
+        textButton.addActionListener(event -> type = 3);
+        lineButton.addActionListener(event -> type = 4);
+        ellipseButton.addActionListener(event -> type = 5);
+        filledEllipseButton.addActionListener(event -> type = 6);
+        rectangleButton.addActionListener(event -> type = 7);
+        filledRectangleButton.addActionListener(event -> type = 8);
     }
+
 
 }
