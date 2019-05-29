@@ -2,7 +2,6 @@ package ua.edu.ukma.ykrukovska.paint;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
@@ -18,7 +17,9 @@ public class PaintApp extends JFrame {
     private final static int HEIGHT = 500;
     private JPanel instrumentsPanel = new JPanel();
     private JPanel colorChooserPanel = new JPanel();
-    //  private MyPanel drawingSpacePanel = new MyPanel();
+
+    private JScrollPane drawingScrollPane;
+    private MyPanel drawingSpacePanel;
     private JButton pencilButton = new JButton("Pencil");
     private JButton brushButton = new JButton("Brush");
     private JButton eraserButton = new JButton("Eraser");
@@ -38,20 +39,17 @@ public class PaintApp extends JFrame {
     private int yStart;
     private int size = 10;
     private boolean pressed = false;
-    private Main.MyFrame frame;
-    private Main.MyPanel panel;
-    private MyPanel drawingSpacePanel;
+    //   private MyPanelTest drawingSpacePanel;
     private BufferedImage image;
     private boolean loading = false;
     private String fileName;
-    private Graphics g;// = image.getGraphics();
+    private Graphics g;
     private Graphics2D g2;
 
 
     public PaintApp() {
 
-        Drawer draw = new Drawer();
-        draw.paint(g);
+
         setTitle("Paint");
         setSize(WIDTH, HEIGHT);
         setLayout(new GridLayout(1, 2));
@@ -60,28 +58,59 @@ public class PaintApp extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        menuBar.setBounds(0, 0, 350, 30);
+        menuBar.setBounds(0, 0, 400, 30);
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
 
         JMenu sizeMenu = new JMenu("Size");
         menuBar.add(sizeMenu);
 
-        JMenu viewMenu = new JMenu("View");
-        menuBar.add(viewMenu);
+        setSizeMenu(sizeMenu);
+        setClearMenu(menuBar);
 
 
         Action loadAction = new AbstractAction("Open") {
             public void actionPerformed(ActionEvent event) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
 
+                        fileName = fileChooser.getSelectedFile().getAbsolutePath();
+                        File fileToOpen = new File(fileName);
+                        image = ImageIO.read(fileToOpen);
+                        loading = true;
+                        drawingSpacePanel.setSize(image.getWidth(), image.getHeight());
+                        drawingSpacePanel.repaint();
+
+
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(null, "This file doesn't exist");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "File doesn't exist");
+                    }
+                }
             }
         };
         JMenuItem loadMenu = new JMenuItem(loadAction);
         fileMenu.add(loadMenu);
 
+
         Action saveAction = new AbstractAction("Save") {
             public void actionPerformed(ActionEvent event) {
-            // hello
+                try {
+                    JFileChooser jf = new JFileChooser();
+
+                    if (fileName == null) {
+                        int result = jf.showSaveDialog(null);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            fileName = jf.getSelectedFile().getAbsolutePath();
+                        }
+                    }
+                    ImageIO.write(image, "jpeg", new File(fileName + ".jpg"));
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Wrong input");
+                }
             }
         };
         JMenuItem saveMenu = new JMenuItem(saveAction);
@@ -90,74 +119,52 @@ public class PaintApp extends JFrame {
         Action saveAsAction = new AbstractAction("Save as...") {
             public void actionPerformed(ActionEvent event) {
 
-
-          //          JFileChooser jf = new JFileChooser();
-                //   int result = jf.showSaveDialog(null);
-               //    if (result == JFileChooser.APPROVE_OPTION) {
-                        //fileName = jf.getSelectedFile().getAbsolutePath();
-
-                    try {
-                        Robot robot = new Robot();
-                        String format = "jpeg";
-
-                        Point p = new Point(drawingSpacePanel.getLocation());
-                        Dimension d = new Dimension(drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight());
-                        Rectangle captureRect = new Rectangle(p, d);
-
-                        BufferedImage screenFullImage = robot.createScreenCapture(captureRect);
-                        ImageIO.write(screenFullImage, format, new File("C:\\IdeaProjects\\Files\\Hello.jpeg"));
-
-                        System.out.println("A partial screenshot saved!");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (AWTException e) {
-                        e.printStackTrace();
-                    }
-              //  }
-
-           /*     try {
+                try {
                     JFileChooser jf = new JFileChooser();
                     int result = jf.showSaveDialog(null);
                     if (result == JFileChooser.APPROVE_OPTION) {
                         fileName = jf.getSelectedFile().getAbsolutePath();
                     }
 
-                    BufferedImage im = new BufferedImage(drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight(),
-                            BufferedImage.TYPE_INT_ARGB);
-                    Graphics2D graphics2D = im.createGraphics();
-                    getContentPane().paint(graphics2D);
-
-                        ImageIO.write(im, "jpeg", new File(fileName + ".jpg"));
+                    ImageIO.write(image, "jpeg", new File(fileName + ".jpg"));
 
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Error of input/output");
-                }*/
+                    JOptionPane.showMessageDialog(null, "Wrong input");
+                }
             }
 
 
         };
+
         JMenuItem saveAsMenu = new JMenuItem(saveAsAction);
         fileMenu.add(saveAsMenu);
 
 
-        setSizeMenu(sizeMenu);
-        setClearMenu(menuBar);
         JColorChooser colorChooser = setColorChooserPanel();
         JPanel panel = setPanel();
         textSizeSlider.setPaintTicks(true);
         setInstrumentsPanel();
-        JScrollPane scrollPane = new JScrollPane(panel);
+        JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVisible(true);
         setDrawingPanel();
-        add(drawingSpacePanel);
+
+        drawingScrollPane = new JScrollPane(drawingSpacePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        drawingScrollPane.getViewport().setPreferredSize(new Dimension(WIDTH/2, HEIGHT));
+        add(drawingScrollPane);
+
+
         add(scrollPane);
+
         setVisible(true);
 
 
-        addMouseMotionListener(new MouseMotionAdapter() {
+        drawingSpacePanel.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
                 if (pressed) {
-                    Graphics g = getGraphics();
+                    Graphics g = image.getGraphics();
                     Graphics2D g2 = (Graphics2D) g;
                     g2.setColor(colorChooser.getColor());
                     switch (type) {
@@ -179,18 +186,19 @@ public class PaintApp extends JFrame {
                     }
                     xStart = e.getX();
                     yStart = e.getY();
+
                 }
                 panel.repaint();
                 menuBar.repaint();
-
+                drawingSpacePanel.repaint();
 
             }
         });
 
-        addMouseListener(new MouseAdapter() {
+        drawingSpacePanel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
 
-                Graphics g = getGraphics();
+                Graphics g = image.getGraphics();
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setColor(colorChooser.getColor());
                 switch (type) {
@@ -211,13 +219,11 @@ public class PaintApp extends JFrame {
                         break;
                     // text
                     case 3:
-                        // focusing on the panel to add text
                         drawingSpacePanel.requestFocus();
                         break;
                 }
                 xStart = e.getX();
                 yStart = e.getY();
-
                 pressed = true;
 
             }
@@ -232,7 +238,7 @@ public class PaintApp extends JFrame {
 
             public void mouseReleased(MouseEvent e) {
 
-                g = getGraphics();
+                g = image.getGraphics();
                 g2 = (Graphics2D) g;
                 g2.setColor(colorChooser.getColor());
 
@@ -272,6 +278,7 @@ public class PaintApp extends JFrame {
                 pressed = false;
                 panel.repaint();
                 menuBar.repaint();
+                drawingSpacePanel.repaint();
 
             }
 
@@ -285,7 +292,7 @@ public class PaintApp extends JFrame {
 
             public void keyTyped(KeyEvent e) {
                 if (type == 3) {
-                    Graphics g = getGraphics();
+                    Graphics g = image.getGraphics();
                     Graphics2D g2 = (Graphics2D) g;
                     g2.setColor(colorChooser.getColor());
                     g2.setStroke(new BasicStroke(2.0f));
@@ -299,14 +306,28 @@ public class PaintApp extends JFrame {
             }
         });
 
-
-
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                if (!loading) {
+                    drawingSpacePanel.setSize(getWidth(), getHeight());
+                    BufferedImage tempImage = new BufferedImage(drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight(),
+                            BufferedImage.TYPE_INT_RGB);
+                    Graphics2D d2 = tempImage.createGraphics();
+                    d2.setColor(Color.white);
+                    d2.fillRect(0, 0, drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight());
+                    tempImage.setData(image.getRaster());
+                    image = tempImage;
+                    drawingSpacePanel.repaint();
+                }
+                loading = false;
+            }
+        });
 
         setVisible(true);
 
     }
 
-    protected JPanel setPanel() {
+    private JPanel setPanel() {
         JPanel panel = new JPanel() {
             @Override
             public Dimension getPreferredSize() {
@@ -320,7 +341,7 @@ public class PaintApp extends JFrame {
         return panel;
     }
 
-    protected JColorChooser setColorChooserPanel() {
+    private JColorChooser setColorChooserPanel() {
         JColorChooser colorChooser = new JColorChooser(Color.white);
 
         colorChooserPanel.add(colorChooser);
@@ -328,9 +349,12 @@ public class PaintApp extends JFrame {
         return colorChooser;
     }
 
-    protected void setClearMenu(JMenuBar menuBar) {
+    private void setClearMenu(JMenuBar menuBar) {
         Action clearAction = new AbstractAction("Clear") {
             public void actionPerformed(ActionEvent event) {
+                Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, (drawingSpacePanel.getWidth()), (drawingSpacePanel.getHeight()));
+                g.setColor(Color.WHITE);
+                g2.fill(rect);
                 drawingSpacePanel.repaint();
             }
         };
@@ -339,13 +363,14 @@ public class PaintApp extends JFrame {
         menuBar.add(clearMenu);
     }
 
-    protected void setDrawingPanel() {
-        drawingSpacePanel = new MyPanel(image);
+    private void setDrawingPanel() {
+        drawingSpacePanel = new MyPanel();
+        System.out.println(drawingSpacePanel.getWidth());
+        System.out.println(drawingSpacePanel.getHeight());
         drawingSpacePanel.setBackground(Color.WHITE);
-        drawingSpacePanel.setVisible(true);
         drawingSpacePanel.setOpaque(true);
+        drawingSpacePanel.setVisible(true);
     }
-
 
 
     private void setSizeMenu(JMenu sizeMenu) {
@@ -373,7 +398,6 @@ public class PaintApp extends JFrame {
         JMenuItem bigSizeItem = new JMenuItem(bigSizeAction);
         sizeMenu.add(bigSizeItem);
     }
-
 
 
     private void setInstrumentsPanel() {
@@ -405,5 +429,27 @@ public class PaintApp extends JFrame {
         filledRectangleButton.addActionListener(event -> type = 8);
     }
 
+    public void paint(Graphics g) {
+        super.paint(g);
+    }
+
+
+    class MyPanel extends JPanel {
+
+        MyPanel() {
+
+        }
+
+        public void paintComponent(Graphics g) {
+            if (image == null) {
+                image = new BufferedImage(drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+                Graphics2D d2 = image.createGraphics();
+                d2.setColor(Color.white);
+                d2.fillRect(0, 0, drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight());
+            }
+            super.paintComponent(g);
+            g.drawImage(image, 0, 0, this);
+        }
+    }
 
 }
