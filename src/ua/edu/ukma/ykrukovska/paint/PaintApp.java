@@ -15,6 +15,8 @@ public class PaintApp extends JFrame {
 
     private final static int WIDTH = 1300;
     private final static int HEIGHT = 500;
+    private final static int MENU_BAR_WIDTH = 400;
+    private final static int MENU_BAR_HEIGHT = 40;
     private JPanel instrumentsPanel = new JPanel();
     private JPanel colorChooserPanel = new JPanel();
 
@@ -30,6 +32,7 @@ public class PaintApp extends JFrame {
     private JButton rectangleButton = new JButton("Rectangle");
     private JButton filledRectangleButton = new JButton("Filled rectangle");
     private JSlider textSizeSlider = new JSlider(10, 25);
+    private JColorChooser colorChooser;
 
 
     private int type = 0;
@@ -39,7 +42,6 @@ public class PaintApp extends JFrame {
     private int yStart;
     private int size = 10;
     private boolean pressed = false;
-    //   private MyPanelTest drawingSpacePanel;
     private BufferedImage image;
     private boolean loading = false;
     private String fileName;
@@ -58,7 +60,7 @@ public class PaintApp extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        menuBar.setBounds(0, 0, 400, 30);
+        menuBar.setBounds(0, 0, MENU_BAR_WIDTH, MENU_BAR_HEIGHT);
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
 
@@ -81,8 +83,8 @@ public class PaintApp extends JFrame {
                         image = ImageIO.read(fileToOpen);
                         loading = true;
                         drawingSpacePanel.setSize(image.getWidth(), image.getHeight());
-                        drawingSpacePanel.repaint();
-
+                        drawingSpacePanel.revalidate();
+                        drawingScrollPane.repaint();
 
                     } catch (FileNotFoundException ex) {
                         JOptionPane.showMessageDialog(null, "This file doesn't exist");
@@ -138,26 +140,11 @@ public class PaintApp extends JFrame {
 
         JMenuItem saveAsMenu = new JMenuItem(saveAsAction);
         fileMenu.add(saveAsMenu);
-
-
-        JColorChooser colorChooser = setColorChooserPanel();
-        JPanel panel = setPanel();
-        textSizeSlider.setPaintTicks(true);
-        setInstrumentsPanel();
-        JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setVisible(true);
         setDrawingPanel();
-
-        drawingScrollPane = new JScrollPane(drawingSpacePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-        drawingScrollPane.getViewport().setPreferredSize(new Dimension(WIDTH/2, HEIGHT));
-        add(drawingScrollPane);
-
-
-        add(scrollPane);
-
+        setDrawingScrollPane();
+        JPanel panel = setPanel();
+        setInstrumentsPanel();
+        setScrollPane(panel);
         setVisible(true);
 
 
@@ -197,6 +184,9 @@ public class PaintApp extends JFrame {
 
         drawingSpacePanel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
+
+                System.out.println(drawingSpacePanel.getWidth());
+                System.out.println(drawingSpacePanel.getHeight());
 
                 Graphics g = image.getGraphics();
                 Graphics2D g2 = (Graphics2D) g;
@@ -327,6 +317,20 @@ public class PaintApp extends JFrame {
 
     }
 
+    protected void setScrollPane(JPanel panel) {
+        JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVisible(true);
+
+        add(scrollPane);
+    }
+
+    protected void setDrawingScrollPane() {
+        drawingScrollPane = new JScrollPane(drawingSpacePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        add(drawingScrollPane);
+    }
+
     private JPanel setPanel() {
         JPanel panel = new JPanel() {
             @Override
@@ -334,6 +338,7 @@ public class PaintApp extends JFrame {
                 return new Dimension(getWidth() / 2, getHeight());
             }
         };
+        colorChooser = setColorChooserPanel();
         panel.add(instrumentsPanel);
         panel.add(colorChooserPanel);
         panel.setOpaque(true);
@@ -365,8 +370,7 @@ public class PaintApp extends JFrame {
 
     private void setDrawingPanel() {
         drawingSpacePanel = new MyPanel();
-        System.out.println(drawingSpacePanel.getWidth());
-        System.out.println(drawingSpacePanel.getHeight());
+        drawingSpacePanel.setPreferredSize(new Dimension(WIDTH / 2, HEIGHT - MENU_BAR_HEIGHT));
         drawingSpacePanel.setBackground(Color.WHITE);
         drawingSpacePanel.setOpaque(true);
         drawingSpacePanel.setVisible(true);
