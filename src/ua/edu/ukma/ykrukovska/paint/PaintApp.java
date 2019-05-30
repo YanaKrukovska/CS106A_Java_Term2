@@ -127,9 +127,7 @@ public class PaintApp extends JFrame {
                     if (result == JFileChooser.APPROVE_OPTION) {
                         fileName = jf.getSelectedFile().getAbsolutePath();
                     }
-
                     ImageIO.write(image, "jpeg", new File(fileName + ".jpg"));
-
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong input");
                 }
@@ -439,9 +437,7 @@ public class PaintApp extends JFrame {
 
 
     class MyPanel extends JPanel {
-
         MyPanel() {
-
         }
 
         public void paintComponent(Graphics g) {
