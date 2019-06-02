@@ -61,6 +61,7 @@ public class PaintApp extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         menuBar.setBounds(0, 0, MENU_BAR_WIDTH, MENU_BAR_HEIGHT);
+
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
 
@@ -183,8 +184,6 @@ public class PaintApp extends JFrame {
         drawingSpacePanel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
 
-                System.out.println(drawingSpacePanel.getWidth());
-                System.out.println(drawingSpacePanel.getHeight());
 
                 Graphics g = image.getGraphics();
                 Graphics2D g2 = (Graphics2D) g;
@@ -273,6 +272,7 @@ public class PaintApp extends JFrame {
         });
 
 
+
         drawingSpacePanel.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
                 drawingSpacePanel.requestFocus();
@@ -315,7 +315,7 @@ public class PaintApp extends JFrame {
 
     }
 
-    protected void setScrollPane(JPanel panel) {
+    private void setScrollPane(JPanel panel) {
         JScrollPane scrollPane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVisible(true);
@@ -323,7 +323,7 @@ public class PaintApp extends JFrame {
         add(scrollPane);
     }
 
-    protected void setDrawingScrollPane() {
+    private void setDrawingScrollPane() {
         drawingScrollPane = new JScrollPane(drawingSpacePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         add(drawingScrollPane);
@@ -450,6 +450,8 @@ public class PaintApp extends JFrame {
             super.paintComponent(g);
             g.drawImage(image, 0, 0, this);
         }
+
+
     }
 
 }
