@@ -3,6 +3,7 @@ package ua.edu.ukma.ykrukovska.lab1;
 import static ua.edu.ukma.ykrukovska.lab1.InputUtils.getCorrectUserString;
 import static ua.edu.ukma.ykrukovska.lab1.InputUtils.getUserInput;
 
+
 public class UniversityDemo {
 
     private static University university = new University();
@@ -123,7 +124,6 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-
         }
         while (InputUtils.showYesNoMenu() != 0);
     }
@@ -137,7 +137,6 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-
         }
         while (InputUtils.showYesNoMenu() != 0);
     }
@@ -190,16 +189,13 @@ public class UniversityDemo {
     }
 
     private static void doSortingStudentsByCourse() {
-
         do {
-
             Student[] students = university.getAllStudentOrderByCourse();
             if (students[0] == null) {
                 System.out.println("Студентів не існує");
             } else {
                 InputUtils.printPersons(students);
             }
-
         }
         while (InputUtils.showYesNoMenu() != 0);
     }
@@ -241,10 +237,8 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(teachers);
             }
-
         }
         while (InputUtils.showYesNoMenu() != 0);
-
     }
 
     private static void findStudentByGroup() {
@@ -272,7 +266,6 @@ public class UniversityDemo {
             } else {
                 InputUtils.printPersons(students);
             }
-
         }
         while (InputUtils.showYesNoMenu() != 0);
     }
@@ -288,9 +281,7 @@ public class UniversityDemo {
                 InputUtils.printPersons(students);
             }
         }
-
         while (InputUtils.showYesNoMenu() != 0);
-
     }
 
     private static void doPersonAction() {
@@ -380,14 +371,11 @@ public class UniversityDemo {
                     if (department.getStudent(name) == null) {
                         System.out.println("Студент не існує");
                     } else {
-
                         department.deleteStudent(name);
                         System.out.println("Студента видалено");
                     }
-
                     InputUtils.printDepartmentStudents(department);
                 }
-
             }
         }
         while (InputUtils.showYesNoMenu() != 0);
@@ -428,7 +416,6 @@ public class UniversityDemo {
         }
         while (InputUtils.showYesNoMenu() != 0);
     }
-
 
     private static void addTeacher() {
         do {
@@ -537,7 +524,7 @@ public class UniversityDemo {
     }
 
     private static void doDepartmentAction() {
-        int userAction ;
+        int userAction;
         do {
             System.out.println("1. Створити кафедру");
             System.out.println("2. Редагувати  кафедру");
@@ -557,7 +544,6 @@ public class UniversityDemo {
                     break;
             }
         } while (userAction != 0);
-
     }
 
     private static void doFacultyAction() {
@@ -600,7 +586,6 @@ public class UniversityDemo {
         while (InputUtils.showYesNoMenu() != 0);
     }
 
-
     private static void editFaculty() {
 
         do {
@@ -622,7 +607,6 @@ public class UniversityDemo {
         }
         while (InputUtils.showYesNoMenu() != 0);
     }
-
 
     private static void addFaculty() {
 
@@ -654,7 +638,6 @@ public class UniversityDemo {
             } else {
 
                 String departmentName = getCorrectUserString("назва кафедри");
-
                 if (faculty.getAcademicDepartment(departmentName) != null) {
                     System.out.println("Кафедра " + departmentName + " вже існує");
                 } else {
@@ -663,7 +646,6 @@ public class UniversityDemo {
                     System.out.println("Кафедру створено");
                     InputUtils.printDepartments(faculty);
                 }
-
             }
         }
         while (InputUtils.showYesNoMenu() != 0);
@@ -736,6 +718,4 @@ public class UniversityDemo {
         System.out.println("10. Вивести всіх студентів кафедри вказаного курсу впорядкованих за алфавітом.");
         System.out.println("0. Вихід.");
     }
-
-
 }

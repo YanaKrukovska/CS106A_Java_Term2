@@ -18,7 +18,6 @@ public class Faculty {
                 return academicDepartments[j];
             }
         }
-
         return null;
     }
 
@@ -26,7 +25,7 @@ public class Faculty {
         for (int i = 0; i < academicDepartmentCounter; i++) {
             if (academicDepartmentName.equals(academicDepartments[i].getName())) {
                 academicDepartments[i] = null;
-                for (int j = i+1; j < academicDepartmentCounter; j++) {
+                for (int j = i + 1; j < academicDepartmentCounter; j++) {
                     academicDepartments[j - 1] = academicDepartments[j];
                 }
                 academicDepartments[--academicDepartmentCounter] = null;
@@ -43,7 +42,6 @@ public class Faculty {
                 break;
             }
         }
-
     }
 
     public AcademicDepartment[] getAcademicDepartments() {

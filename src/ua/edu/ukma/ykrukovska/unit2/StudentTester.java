@@ -1,17 +1,15 @@
 package ua.edu.ukma.ykrukovska.unit2;
 
-import ua.edu.ukma.ykrukovska.Unit1.StudentsGrades;
+import ua.edu.ukma.ykrukovska.unit1.StudentsGrades;
 
 public class StudentTester {
 
     public static void main(String[] args) {
 
-        Student[] students = new Student[5];
-        students[0] = new Student("Justin", 24);
-        students[1] = new Student("Oleg", 97);
+        Student[] students = new Student[3];
+        students[0] = new Student("Justin Bieber", 24);
+        students[1] = new Student("Oleg Vynnyk", 97);
         students[2] = new Student("Poplavok", 50);
-        students[3] = new Student("Alla", 10);
-        students[4] = new Student("Face", 99);
 
         StudentsGrades gradeService = new StudentsGrades();
 
@@ -43,7 +41,6 @@ public class StudentTester {
             System.out.println(students[i]);
         }
     }
-
 
 }
 

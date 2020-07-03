@@ -10,8 +10,7 @@ public class WordCounter {
     private static List<String> files = new ArrayList<String>();
     private Dictionary dictionary = new Dictionary();
 
-
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         WordCounter wordCounter = new WordCounter();
         try {
             wordCounter.calculateWords();
@@ -34,12 +33,9 @@ public class WordCounter {
                     dictionary.addWord(fileName, text.sval.toLowerCase());
                 }
             }
-
         }
-
         printStatistic();
         saveToDisc();
-
     }
 
     private void saveToDisc() {
@@ -54,8 +50,6 @@ public class WordCounter {
                 System.out.print(wordStat.getWord() + " " + wordStat.getAllOccurrencesCount() + System.lineSeparator());
             }
         }
-
-
     }
 
     private void printStatistic() {
@@ -67,28 +61,14 @@ public class WordCounter {
             try {
                 writer = new PrintWriter(resultFile);
             } catch (FileNotFoundException e1) {
-                //Never happens
+                System.out.println("File's not found");
             }
         }
 
         writer.print(dictionary.toString());
     }
 
-
     private void initFiles() {
         files.add("Text1.txt");
-      /*  files.add("Text2.txt");
-        files.add("Text3.txt");
-        files.add("Text4.txt");
-        files.add("Text5.txt");
-        files.add("Text6.txt");
-        files.add("Text7.txt");
-        files.add("Text8.txt");
-        files.add("Text9.txt");
-        files.add("Text10.rtf");*/
-
-
     }
-
-
 }

@@ -10,17 +10,12 @@ public class CaesarCipherTester {
     public static void main(String[] args) throws IOException {
 
         CaesarCipher encoder = new CaesarCipher();
-
         System.out.println(("Line to encode: "));
         String lineToEncode = getString();
         encoder.saveString(lineToEncode);
         System.out.println("Insert shift: ");
         int shift = getInt();
 
-
         System.out.println("Encoded line: " + encoder.encode(shift));
-
-
     }
-
 }

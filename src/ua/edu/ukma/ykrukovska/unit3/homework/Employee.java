@@ -6,12 +6,13 @@ public class Employee {
     private String role;
     private int age;
 
-    public void prepareCatForSell(Cat catForSell){
-
+    public void prepareCatForSell(Cat catForSell) {
     }
 
-    public void cleanFloor(){
+    public void cleanFloor() {
+    }
 
+    public void feedAnimals() {
     }
 
 }

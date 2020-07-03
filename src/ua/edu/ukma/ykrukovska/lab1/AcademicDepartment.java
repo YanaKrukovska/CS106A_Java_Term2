@@ -1,6 +1,5 @@
 package ua.edu.ukma.ykrukovska.lab1;
 
-
 public class AcademicDepartment {
 
     private Faculty faculty;
@@ -14,7 +13,6 @@ public class AcademicDepartment {
         students[studentsCounter++] = student;
         student.setFaculty(this.getFaculty());
         student.setAcademicDepartment(this);
-
     }
 
     public Student getStudent(String studentsName) {
@@ -24,9 +22,7 @@ public class AcademicDepartment {
                 return students[i];
             }
         }
-
         return null;
-
     }
 
     public void deleteStudent(String studentsName) {
@@ -52,14 +48,12 @@ public class AcademicDepartment {
                 break;
             }
         }
-
     }
 
     public void addTeacher(Teacher teacher) {
         teachers[teachersCounter++] = teacher;
         teacher.setFaculty(this.getFaculty());
         teacher.setAcademicDepartment(this);
-
     }
 
     public Teacher getTeacher(String teachersName) {
@@ -69,7 +63,6 @@ public class AcademicDepartment {
                 return teachers[i];
             }
         }
-
         return null;
     }
 
@@ -78,7 +71,7 @@ public class AcademicDepartment {
         for (int i = 0; i < teachersCounter; i++) {
             if (teachersName.equals(teachers[i].getName())) {
                 teachers[i] = null;
-                for (int j = i +1; j < teachersCounter; j++) {
+                for (int j = i + 1; j < teachersCounter; j++) {
                     teachers[j - 1] = teachers[j];
                 }
                 teachers[--teachersCounter] = null;
@@ -135,6 +128,6 @@ public class AcademicDepartment {
 
     @Override
     public String toString() {
-        return  name;
+        return name;
     }
 }

@@ -2,7 +2,7 @@ package ua.edu.ukma.ykrukovska.unit9.practice;
 
 public class GroupTester {
 
-    public static final int MAX_AMOUNT_OF_STUDENTS = 2;
+    public static final int MAX_AMOUNT_OF_STUDENTS = 3;
 
     public static void main(String[] args) {
 

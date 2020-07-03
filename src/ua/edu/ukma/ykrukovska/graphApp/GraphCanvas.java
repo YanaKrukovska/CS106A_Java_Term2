@@ -12,7 +12,6 @@ public class GraphCanvas extends JComponent {
     private double a;
     private static final double SCALE = 50;
 
-
     public GraphCanvas(double step, double xMin, double xMax, double a) {
         this.step = step;
         this.xMin = xMin;
@@ -20,12 +19,12 @@ public class GraphCanvas extends JComponent {
         this.a = a;
     }
 
-
     @Override
     public void paint(Graphics g) {
 
         super.paintComponents(g);
         Graphics2D gr = (Graphics2D) g;
+        gr.setColor(Color.LIGHT_GRAY);
         gr.setColor(Color.BLACK);
 
         drawLines(gr);
@@ -44,14 +43,12 @@ public class GraphCanvas extends JComponent {
 
         do {
             x2 = x1 + step;
-            y2 =  (FunctionCalculator.calculate(x2, a)) ;
-            gr.draw(new Line2D.Double(xShift + x1*SCALE, yShift - y1*SCALE, xShift+ x2*SCALE, yShift - y2*SCALE));
+            y2 = (FunctionCalculator.calculate(x2, a));
+            gr.draw(new Line2D.Double(xShift + x1 * SCALE, yShift - y1 * SCALE, xShift + x2 * SCALE, yShift - y2 * SCALE));
             x1 = x2;
             y1 = y2;
 
         } while (x2 <= xMax);
-
-
     }
 
     private void drawYPoints(Graphics2D gr) {
@@ -82,10 +79,8 @@ public class GraphCanvas extends JComponent {
         }
     }
 
-
     private void drawLines(Graphics2D gr) {
         gr.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, getWidth());
         gr.drawLine(0, this.getHeight() / 2, getWidth(), this.getHeight() / 2);
     }
-
 }

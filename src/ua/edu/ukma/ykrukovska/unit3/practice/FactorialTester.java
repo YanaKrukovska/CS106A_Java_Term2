@@ -8,9 +8,10 @@ public class FactorialTester {
     }
 
     private static void demoCachedFactorialCalculator() {
+        System.out.println("");
         System.out.println("Cached: ");
-        System.out.println("Param = " + 0 + ". Result = " + CachedFactorialCalculator.calculateFactorial(0));
-        System.out.println("Param = " + 1 + ". Result = " + CachedFactorialCalculator.calculateFactorial(1));
+        System.out.println("Param = " + 8 + ". Result = " + CachedFactorialCalculator.calculateFactorial(8));
+        System.out.println("Param = " + 12 + ". Result = " + CachedFactorialCalculator.calculateFactorial(12));
         System.out.println("Param = " + 5 + ". Result = " + CachedFactorialCalculator.calculateFactorial(5));
         System.out.println("Param = " + 16 + ". Result = " + CachedFactorialCalculator.calculateFactorial(16));
         System.out.println("Param = " + 9 + ". Result = " + CachedFactorialCalculator.calculateFactorial(9));
@@ -20,8 +21,8 @@ public class FactorialTester {
     }
 
     private static void demoSimpleFactorialCalculator() {
-        System.out.println("Param = " + 0 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(0));
-        System.out.println("Param = " + 1 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(1));
+        System.out.println("Param = " + 8 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(8));
+        System.out.println("Param = " + 12 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(12));
         System.out.println("Param = " + 5 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(5));
         System.out.println("Param = " + 16 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(16));
         System.out.println("Param = " + 20 + ". Result = " + SimpleFactorialCalculator.calculateFactorial(20));

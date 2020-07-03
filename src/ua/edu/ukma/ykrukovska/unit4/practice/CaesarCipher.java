@@ -4,15 +4,13 @@ public class CaesarCipher {
 
     private String line;
 
-    public void saveString(String line){
+    public void saveString(String line) {
         this.line = line;
     }
 
-
-
     public String encode(int shift) {
 
-        if (line == null || line.length() == 0){
+        if (line == null || line.length() == 0) {
             throw new IllegalStateException("Line to encode is not specified");
         }
 
@@ -26,11 +24,7 @@ public class CaesarCipher {
                 c += 95;
             }
             result += (char) c;
-
         }
-
         return result;
-
-
     }
 }

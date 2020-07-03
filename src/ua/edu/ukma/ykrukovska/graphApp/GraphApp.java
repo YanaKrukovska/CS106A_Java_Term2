@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class GraphApp extends JFrame {
 
-    private final static int WIDTH = 900;
+    private final static int WIDTH = 700;
     private final static int HEIGHT = 450;
     private GraphCanvas canvas;
     private JTextField aField = new JTextField();
@@ -29,7 +29,6 @@ public class GraphApp extends JFrame {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(1, 10));
         infoPanel.setSize(new Dimension(WIDTH, 50));
@@ -39,13 +38,11 @@ public class GraphApp extends JFrame {
         JLabel xMin = new JLabel("X min");
         JLabel xMax = new JLabel("X max");
 
-
         JButton saveButton = new JButton("Save");
         JButton drawButton = new JButton("Draw");
 
         addSaveButtonListener(saveButton);
         addDrawButtonListener(drawButton);
-
 
         infoPanel.add(aLabel);
         infoPanel.add(aField);
@@ -58,13 +55,10 @@ public class GraphApp extends JFrame {
         infoPanel.add(saveButton);
         infoPanel.add(drawButton);
 
-
         add(infoPanel, BorderLayout.NORTH);
         JPanel graphPanel = new JPanel();
         add(graphPanel, BorderLayout.SOUTH);
         setVisible(true);
-
-
     }
 
     private void addDrawButtonListener(JButton drawButton) {
@@ -77,7 +71,6 @@ public class GraphApp extends JFrame {
                 }
             }
         });
-
     }
 
     private boolean checkValues() {
@@ -123,7 +116,6 @@ public class GraphApp extends JFrame {
     private void addSaveButtonListener(JButton saveButton) {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 JFileChooser fileToSave = new JFileChooser();
                 int ret = fileToSave.showDialog(null, "Save");
                 if (ret == JFileChooser.APPROVE_OPTION) {
@@ -141,8 +133,6 @@ public class GraphApp extends JFrame {
                             "There is no graph yet!", "Oops", JOptionPane.ERROR_MESSAGE);
                 }
             }
-
-
         });
     }
 

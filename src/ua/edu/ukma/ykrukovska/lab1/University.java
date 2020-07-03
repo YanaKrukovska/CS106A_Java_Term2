@@ -7,7 +7,6 @@ public class University {
 
     private Faculty[] faculties = new Faculty[10];
 
-
     public void addFaculty(Faculty faculty) {
         faculties[facultyCounter++] = faculty;
     }
@@ -43,7 +42,6 @@ public class University {
         }
     }
 
-
     public Student[] findStudentByName(String name) {
 
         Student[] result = new Student[MAX_AMOUNT_OF_STUDENTS];
@@ -60,7 +58,6 @@ public class University {
                         result[resultCounter++] = department.getStudents()[k];
                     }
                 }
-
             }
         }
         return result;
@@ -83,8 +80,6 @@ public class University {
                 }
             }
         }
-
-
         return result;
     }
 
@@ -108,8 +103,6 @@ public class University {
             }
         }
         return result;
-
-
     }
 
     public Teacher[] findTeacherByName(String name) {
@@ -144,15 +137,11 @@ public class University {
             Faculty faculty = faculties[i];
             for (int j = 0; j < faculty.getAcademicDepartmentCounter(); j++) {
                 AcademicDepartment department = faculty.getAcademicDepartments()[j];
-
                 for (int k = 0; k < department.getStudentsCounter(); k++) {
-
                     result[resultCounter++] = department.getStudents()[k];
-
                 }
             }
         }
-
         return result;
     }
 
@@ -165,16 +154,11 @@ public class University {
         Student[] result = new Student[100];
         int resultCounter = 0;
 
-
         for (int i = 0; i < facultyCounter; i++) {
             if (faculties[i].getName().equals(facultyName)) {
-
-
                 for (int j = 0; j < faculties[i].getAcademicDepartmentCounter(); j++) {
                     AcademicDepartment department = faculties[i].getAcademicDepartments()[j];
-
                     for (int k = 0; k < department.getStudentsCounter(); k++) {
-
                         result[resultCounter++] = department.getStudents()[k];
                     }
                 }
@@ -188,16 +172,11 @@ public class University {
         Teacher[] result = new Teacher[MAX_AMOUNT_OF_STUDENTS];
         int resultCounter = 0;
 
-
         for (int i = 0; i < facultyCounter; i++) {
             if (faculties[i].getName().equals(facultyName)) {
-
-
                 for (int j = 0; j < faculties[i].getAcademicDepartmentCounter(); j++) {
                     AcademicDepartment department = faculties[i].getAcademicDepartments()[j];
-
                     for (int k = 0; k < department.getTeachersCounter(); k++) {
-
                         result[resultCounter++] = department.getTeachers()[k];
                     }
                 }
@@ -251,7 +230,6 @@ public class University {
     public Person[] getStudentsOfDepartmentOrderByName(String departmentName) {
         return SortUtils.sortByName(getStudentsOfDepartment(departmentName));
     }
-
 
     public Person[] getTeachersOfDepartmentOrderByName(String departmentName) {
         return SortUtils.sortByName(getTeachersOfDepartment(departmentName));

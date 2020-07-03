@@ -14,7 +14,6 @@ public class Rectangle {
         this.y2 = y2;
     }
 
-
     public void rectShift(int shiftX, int shiftY) {
         x1 += shiftX;
         x2 += shiftX;
@@ -22,14 +21,11 @@ public class Rectangle {
         y2 += shiftY;
     }
 
-
     public boolean isPointBelong(int pointX, int pointY) {
-
         return pointX >= x1 && pointX <= x2 && pointY >= y1 && pointY <= y2;
     }
 
     public Rectangle combineRectangles(Rectangle r2) {
-
         int x1 = getX1() <= r2.getX1() ? getX1() : r2.getX1();
         int y1 = getY1() <= r2.getY1() ? getY1() : r2.getY1();
         int x2 = getX2() <= r2.getX2() ? r2.getX2() : getX2();
@@ -38,8 +34,7 @@ public class Rectangle {
         return new Rectangle(x1, y1, x2, y2);
     }
 
-
-    public Rectangle findIntersection(Rectangle r2){
+    public Rectangle findIntersection(Rectangle r2) {
         int xmin = Math.max(getX1(), r2.getX1());
         int xmax1 = getX2();
         int xmax2 = r2.getX2();
@@ -50,7 +45,7 @@ public class Rectangle {
             int ymax2 = r2.getY2();
             int ymax = Math.min(ymax1, ymax2);
             if (ymax > ymin) {
-                return new Rectangle(xmin, ymin,xmax , ymax );
+                return new Rectangle(xmin, ymin, xmax, ymax);
             }
         }
         return null;

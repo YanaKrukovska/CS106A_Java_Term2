@@ -2,15 +2,13 @@ package ua.edu.ukma.ykrukovska.unit5.homework;
 
 public class Parallelepiped {
 
-
-    private int a;
-    private int b;
-    private int c;
+    private double a;
+    private double b;
+    private double c;
     private int slopeAngle;
     private int baseAngle;
 
-
-    public Parallelepiped(int a, int b, int c, int slopeAngle, int baseAngle) {
+    public Parallelepiped(double a, double b, double c, int slopeAngle, int baseAngle) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -24,25 +22,24 @@ public class Parallelepiped {
         }
     }
 
-    public Parallelepiped(int a, int b, int c) {
+    public Parallelepiped(double a, double b, double c) {
         this(a, b, c, 90, 90);
     }
 
-    public Parallelepiped(int a) {
+    public Parallelepiped(double a) {
 
         this(a, a, a, 90, 90);
     }
 
-
-    public int getA() {
+    public double getA() {
         return a;
     }
 
-    public int getB() {
+    public double getB() {
         return b;
     }
 
-    public int getC() {
+    public double getC() {
         return c;
     }
 

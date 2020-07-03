@@ -9,30 +9,20 @@ public class GameController {
     private GameView view;
 
     public GameController() {
-
         view = new GameView(this, gameModel);
-
     }
 
     public static void main(String[] args) {
-
         GameController gameController = new GameController();
-
-
-
     }
-
 
     public int checkIfInputIsNumber(String input) {
         int number;
-      try {
-         number = Integer.valueOf(input);
-      } catch (NumberFormatException e){
-          return -1;
-      }
-      return number;
+        try {
+            number = Integer.valueOf(input);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+        return number;
     }
-
-
-
 }

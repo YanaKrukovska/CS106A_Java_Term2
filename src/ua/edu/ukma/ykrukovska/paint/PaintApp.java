@@ -34,7 +34,6 @@ public class PaintApp extends JFrame {
     private JSlider textSizeSlider = new JSlider(10, 25);
     private JColorChooser colorChooser;
 
-
     private int type = 0;
     private int xStart;
     private int xf;
@@ -48,15 +47,12 @@ public class PaintApp extends JFrame {
     private Graphics g;
     private Graphics2D g2;
 
-
     public PaintApp() {
-
 
         setTitle("Paint");
         setSize(WIDTH, HEIGHT);
         setLayout(new GridLayout(1, 2));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -70,7 +66,6 @@ public class PaintApp extends JFrame {
 
         setSizeMenu(sizeMenu);
         setClearMenu(menuBar);
-
 
         Action loadAction = new AbstractAction("Open") {
             public void actionPerformed(ActionEvent event) {
@@ -98,7 +93,6 @@ public class PaintApp extends JFrame {
         JMenuItem loadMenu = new JMenuItem(loadAction);
         fileMenu.add(loadMenu);
 
-
         Action saveAction = new AbstractAction("Save") {
             public void actionPerformed(ActionEvent event) {
                 try {
@@ -110,7 +104,7 @@ public class PaintApp extends JFrame {
                             fileName = jf.getSelectedFile().getAbsolutePath();
                         }
                     }
-                    ImageIO.write(image, "jpeg", new File(fileName + ".jpg"));
+                    ImageIO.write(image, "jpeg", new File(fileName));
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Wrong input");
                 }
@@ -133,8 +127,6 @@ public class PaintApp extends JFrame {
                     JOptionPane.showMessageDialog(null, "Wrong input");
                 }
             }
-
-
         };
 
         JMenuItem saveAsMenu = new JMenuItem(saveAsAction);
@@ -145,7 +137,6 @@ public class PaintApp extends JFrame {
         setInstrumentsPanel();
         setScrollPane(panel);
         setVisible(true);
-
 
         drawingSpacePanel.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
@@ -212,7 +203,6 @@ public class PaintApp extends JFrame {
                 xStart = e.getX();
                 yStart = e.getY();
                 pressed = true;
-
             }
 
             public void mousePressed(MouseEvent e) {
@@ -266,12 +256,8 @@ public class PaintApp extends JFrame {
                 panel.repaint();
                 menuBar.repaint();
                 drawingSpacePanel.repaint();
-
             }
-
         });
-
-
 
         drawingSpacePanel.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
@@ -346,7 +332,6 @@ public class PaintApp extends JFrame {
 
     private JColorChooser setColorChooserPanel() {
         JColorChooser colorChooser = new JColorChooser(Color.white);
-
         colorChooserPanel.add(colorChooser);
         colorChooserPanel.setBounds(getWidth() / 2, getHeight() / 3, getWidth() / 2, getHeight() - getHeight() / 3);
         return colorChooser;
@@ -355,7 +340,7 @@ public class PaintApp extends JFrame {
     private void setClearMenu(JMenuBar menuBar) {
         Action clearAction = new AbstractAction("Clear") {
             public void actionPerformed(ActionEvent event) {
-                Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, (drawingSpacePanel.getWidth()), (drawingSpacePanel.getHeight()));
+                Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, drawingSpacePanel.getWidth(), drawingSpacePanel.getHeight());
                 g.setColor(Color.WHITE);
                 g2.fill(rect);
                 drawingSpacePanel.repaint();
@@ -373,7 +358,6 @@ public class PaintApp extends JFrame {
         drawingSpacePanel.setOpaque(true);
         drawingSpacePanel.setVisible(true);
     }
-
 
     private void setSizeMenu(JMenu sizeMenu) {
         Action smallSizeAction = new AbstractAction("Small") {
@@ -401,7 +385,6 @@ public class PaintApp extends JFrame {
         sizeMenu.add(bigSizeItem);
     }
 
-
     private void setInstrumentsPanel() {
         instrumentsPanel.setLayout(new GridLayout(4, 3));
         addActionListeners();
@@ -415,7 +398,6 @@ public class PaintApp extends JFrame {
         instrumentsPanel.add(filledEllipseButton);
         instrumentsPanel.add(rectangleButton);
         instrumentsPanel.add(filledRectangleButton);
-
         instrumentsPanel.setBounds(getWidth() / 2, 0, getWidth() / 2, getHeight() / 3);
     }
 
@@ -435,7 +417,6 @@ public class PaintApp extends JFrame {
         super.paint(g);
     }
 
-
     class MyPanel extends JPanel {
         MyPanel() {
         }
@@ -450,8 +431,5 @@ public class PaintApp extends JFrame {
             super.paintComponent(g);
             g.drawImage(image, 0, 0, this);
         }
-
-
     }
-
 }

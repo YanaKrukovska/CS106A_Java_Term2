@@ -1,4 +1,4 @@
-package ua.edu.ukma.ykrukovska.Unit1.homework;
+package ua.edu.ukma.ykrukovska.unit1.homework;
 
 public class Student {
 

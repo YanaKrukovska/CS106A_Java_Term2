@@ -51,8 +51,8 @@ public class LoginFrame extends JFrame {
                     String password = new String (passwordField.getPassword());
 
 
-                    if (username.equals("Justin") && password.equals("rita")) {
-                        JOptionPane.showMessageDialog(getParent(), "Login Successful. Oleg Vynnyk is better than Justin Bieber");
+                    if (username.equals("Student") && password.equals("naukma")) {
+                        JOptionPane.showMessageDialog(getParent(), "Login Successful. Oleg Vynnyk is better than Poplavskyi");
                     } else {
                         JOptionPane.showMessageDialog(getParent(), "Error");
                     }

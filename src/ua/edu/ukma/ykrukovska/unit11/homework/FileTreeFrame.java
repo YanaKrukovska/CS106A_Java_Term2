@@ -11,12 +11,9 @@ public class FileTreeFrame extends JFrame {
     private JTree fileTree;
     private FileSystemModel fileSystemModel;
 
-
     public FileTreeFrame(String directory) {
         super("FileSystem Viewer");
         getContentPane().setLayout(null);
-
-
         fileSystemModel = new FileSystemModel(new File(directory));
         fileTree = new JTree(fileSystemModel);
         fileTree.setEditable(true);
@@ -30,7 +27,7 @@ public class FileTreeFrame extends JFrame {
     }
 
     public static void main(String args[]) {
-        new FileTreeFrame("c:\\");
+        new FileTreeFrame("C:\\");
     }
 }
 
@@ -81,15 +78,6 @@ class FileSystemModel implements TreeModel {
 
     }
 
-    public void valueForPathChanged(TreePath path, Object value) {
-    }
-
-    public void addTreeModelListener(TreeModelListener listener) {
-    }
-
-    public void removeTreeModelListener(TreeModelListener listener) {
-    }
-
     private class TreeFile extends File {
         public TreeFile(File parent, String child) {
             super(parent, child);
@@ -99,4 +87,14 @@ class FileSystemModel implements TreeModel {
             return getName();
         }
     }
+
+    public void valueForPathChanged(TreePath path, Object value) {
+    }
+
+    public void addTreeModelListener(TreeModelListener listener) {
+    }
+
+    public void removeTreeModelListener(TreeModelListener listener) {
+    }
+
 }

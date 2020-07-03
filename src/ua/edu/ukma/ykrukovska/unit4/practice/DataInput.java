@@ -1,4 +1,4 @@
-package ua.edu.ukma.ykrukovska.Unit1;
+package ua.edu.ukma.ykrukovska.unit4.practice;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -5,11 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 
-
-
 public class ReaderDemo {
 
-    private static final String FILE_PATH = "D:\\Song.txt";
+    private static final String FILE_PATH = "C:\\IdeaProjects\\Files\\Text1.txt";
 
     public static void main(String[] args) {
 
@@ -39,6 +37,4 @@ public class ReaderDemo {
         }
 
     }
-
-
 }

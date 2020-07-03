@@ -14,7 +14,7 @@ public class PizzaStoreTester {
         System.out.println();
         mamaMia.open();
         if (mamaMia.checkAvailableTables()) {
-            mamaMia.bookTable("Genddiy", "1 800 555");
+            mamaMia.bookTable("Genaddiy", "1 800 555");
         }
         System.out.println(mamaMia.placeOrder("Margarita"));
         System.out.println(mamaMia.supplyPizza());

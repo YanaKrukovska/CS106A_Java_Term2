@@ -1,10 +1,9 @@
 package ua.edu.ukma.ykrukovska.lab1;
 
-public class Student extends Person{
+public class Student extends Person {
 
     private int course;
     private String group;
-
 
     public Student(String name, int course, String group) {
         super(name);
@@ -20,10 +19,10 @@ public class Student extends Person{
         return group;
     }
 
-      @Override
+    @Override
     public String toString() {
         return "Student. Name: " + name + ", faculty: " + getFaculty().getName() + ", academic department: " +
-                getAcademicDepartment().getName() + ", course: " + course + ", group: "+ group;
+                getAcademicDepartment().getName() + ", course: " + course + ", group: " + group;
 
     }
 }

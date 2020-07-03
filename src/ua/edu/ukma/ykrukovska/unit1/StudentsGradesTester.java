@@ -1,4 +1,4 @@
-package ua.edu.ukma.ykrukovska.Unit1;
+package ua.edu.ukma.ykrukovska.unit1;
 
 public class StudentsGradesTester {
 
@@ -44,10 +44,7 @@ public class StudentsGradesTester {
                 System.out.println("You can only choose 1 or 2. Try again");
                 sortingOrder = DataInput.getInt();
             } while (sortingOrder != 1 && sortingOrder != 2);
-
-
         }
         System.out.println("Marks sorted: " + gradesService.sortGrades(sortingOrder));
-
     }
 }

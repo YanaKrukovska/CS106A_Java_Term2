@@ -24,7 +24,7 @@ public class SortUtils {
                 return i;
             }
         }
-            return 0;
+        return 0;
     }
 
     public static Person[] sortByName(Person[] persons) {
@@ -43,8 +43,6 @@ public class SortUtils {
                 }
             }
         } while ((isSwapped));
-
-
         return persons;
     }
 }

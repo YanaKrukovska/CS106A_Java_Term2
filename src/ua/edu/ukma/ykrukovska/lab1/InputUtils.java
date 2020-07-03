@@ -3,6 +3,7 @@ package ua.edu.ukma.ykrukovska.lab1;
 import java.io.IOException;
 
 public class InputUtils {
+
     public static int getUserInput(int min, int max, String prompt) {
         System.out.println("Введіть " + prompt);
         int userInput = DataInput.getInt();
@@ -79,9 +80,6 @@ public class InputUtils {
     }
 
     static int showYesNoMenu() {
-
         return getUserInput(0, 1, " режим ( 0 - завершити, 1 - продовжити)");
-
-
     }
 }

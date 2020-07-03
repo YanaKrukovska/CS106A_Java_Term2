@@ -1,4 +1,4 @@
-package ua.edu.ukma.ykrukovska.Unit1;
+package ua.edu.ukma.ykrukovska.unit1;
 
 import ua.edu.ukma.ykrukovska.unit2.Student;
 
@@ -46,7 +46,6 @@ public class StudentsGrades {
             result += grades[i];
         }
         return result / grades.length;
-
     }
 
     public int getStudentsHigherAverage() {
@@ -76,7 +75,6 @@ public class StudentsGrades {
 
     public int getStudentsExcellent() {
         int result = 0;
-
         for (int i = 0; i < grades.length; i++) {
             if (grades[i] >= 91) {
                 result++;
@@ -133,15 +131,11 @@ public class StudentsGrades {
         }
 
         if (sortingOrder == 1) {
-
             for (int i = 0; i < grades.length; i++) {
-
                 result += grades[i] + ", ";
             }
         } else {
-
             for (int i = grades.length - 1; i >= 0; i--) {
-
                 result += grades[i] + ", ";
             }
         }
@@ -149,8 +143,6 @@ public class StudentsGrades {
     }
 
     public void sortByGradeAsc(Student[] students) {
-
-
         for (int i = students.length - 1; i >= 0; i--) {
             for (int j = 1; j <= i; j++) {
                 if (students[j - 1].getAverageGrade() > students[j].getAverageGrade()) {
@@ -172,10 +164,7 @@ public class StudentsGrades {
                 }
             }
         }
-
-
     }
-
 
     public void sortByNameAsc(Student[] students) {
         for (int i = students.length - 1; i >= 0; i--) {
@@ -200,7 +189,6 @@ public class StudentsGrades {
             }
         }
     }
-
 
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
-package ua.edu.ukma.ykrukovska.Unit1.homework;
-import ua.edu.ukma.ykrukovska.Unit1.DataInput;
+package ua.edu.ukma.ykrukovska.unit1.homework;
+
+import ua.edu.ukma.ykrukovska.unit1.DataInput;
+
 import java.io.IOException;
 
 public class GroupTester {
@@ -7,11 +9,12 @@ public class GroupTester {
     private static final int MAX_SIZE = 5;
 
     public static void main(String[] args) throws IOException {
+
         int inputCounter = 0;
 
         Group group = new Group();
 
-        Student [] students = new Student[MAX_SIZE];
+        Student[] students = new Student[MAX_SIZE];
 
         System.out.println("Insert students names: ");
         do {

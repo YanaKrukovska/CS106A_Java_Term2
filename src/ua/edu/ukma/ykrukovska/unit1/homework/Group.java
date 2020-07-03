@@ -1,7 +1,6 @@
-package ua.edu.ukma.ykrukovska.Unit1.homework;
+package ua.edu.ukma.ykrukovska.unit1.homework;
 
 public class Group {
-
 
     private Student[] students;
 
@@ -23,13 +22,10 @@ public class Group {
     }
 
     public void filterStudents(char letter) {
-
-
         for (int i = 0; i < students.length; i++) {
             if (students[i].getName().charAt(0) == letter) {
                 System.out.println(students[i].toString());
             }
         }
-
     }
 }

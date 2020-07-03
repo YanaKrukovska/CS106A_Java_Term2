@@ -1,6 +1,6 @@
 package ua.edu.ukma.ykrukovska.lab1;
 
-public class Teacher extends Person{
+public class Teacher extends Person {
 
     public Teacher(String name) {
         super(name);
